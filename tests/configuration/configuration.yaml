@@ -1,0 +1,112 @@
+# yaml-language-server: $schema=../../jsonschema/configuration.schema.json
+connection_settings:
+  url:
+    env: CONNECTION_URL
+  headers:
+    X-Scope-OrgID:
+      env: LOKI_ORG_ID
+  timeout: 30
+metadata:
+  models:
+    hasura_log:
+      pipelines:
+        - type: json
+          fields:
+            type:
+              selector: type
+            level:
+              selector: level
+      labels:
+        container_name:
+          source: container
+          filter:
+            operator: _eq
+            value: ndc-loki-graphql-engine-1
+            static: false
+        service_name:
+          filter:
+            operator: _eq
+            value: ndc-loki-graphql-engine-1
+            static: true
+    http_log:
+      pipelines:
+        - type: line_filter
+          operator: _ilike
+          value: '"type":"http-log"'
+        - type: json
+          fields:
+            type:
+              selector: type
+            level:
+              selector: level
+            request_url:
+              selector: detail.http_info.url
+            operation_name:
+              selector: detail.operation.query.operationName
+            latency:
+              selector: detail.operation.query_execution_time
+            http_status:
+              selector: detail.http_info.status
+      labels:
+        container_name:
+          source: container
+          filter:
+            operator: _eq
+            value: ndc-loki-graphql-engine-1
+            static: false
+        service_name:
+          filter:
+            operator: _eq
+            value: ndc-loki-graphql-engine-1
+            static: true
+    nginx_log:
+      pipelines:
+        - type: line_filter
+          operator: _regex
+          value: ^[0-9]+\.
+        - type: pattern
+          pattern: <remote_addr> - <remote_user> [<time_local>] "<request>" <status> <body_bytes_sent> "<http_referer>" "<http_user_agent>" <request_length> <request_time> [<proxy_upstream_name>] [<proxy_alternative_upstream_name>] <upstream_addr> <upstream_response_length> <upstream_response_time> <upstream_status> <req_id>
+          fields:
+            remote_addr: {}
+            remote_user: {}
+            time_local: {}
+            request: {}
+            status: {}
+            body_bytes_sent: {}
+            http_referer: {}
+            http_user_agent: {}
+            request_length: {}
+            request_time: {}
+      labels:
+        container_name:
+          source: container
+          filter:
+            operator: _eq
+            value: ndc-loki-gateway-1
+            static: false
+        service_name:
+          filter:
+            operator: _eq
+            value: ndc-loki-gateway-1
+            static: true
+  native_operations:
+    queries:
+      hasura_log_count:
+        type: metric
+        query: 'count by (type) (rate({service_name="ndc-loki-graphql-engine-1", container="ndc-loki-graphql-engine-1"} | json level="level", type="type" | type = `${type}` | level = `${level}` [1m]))'
+        labels:
+          type: {}
+        arguments:
+          type:
+            type: String
+          level:
+            type: String
+runtime:
+  flat: true
+  unix_time_unit: ms
+  format:
+    timestamp: rfc3339
+    value: float64
+    nan: null
+    inf: "+Inf"
+    negative_inf: "-Inf"

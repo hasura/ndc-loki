@@ -1,0 +1,487 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 7,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dd0"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dd0"
+          },
+          "editorMode": "code",
+          "expr": "topk(5, sum by (operation_name) (count_over_time({service_name=\"ndc-loki-graphql-engine-1\"} | json type, level, request_url=\"detail.http_info.url\", operation_name=\"detail.operation.query.operationName\" | type = \"http-log\" | request_url = \"/v1/graphql\" [$__auto])))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 5 GraphQL requests",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "labelsToFields": true,
+            "reducers": ["sum"]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Field": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Field": "",
+              "operation_name": "Operation Name"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dd0"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dd0"
+          },
+          "editorMode": "code",
+          "expr": "topk(5, avg by (operation_name) (quantile_over_time(0.95, {service_name=\"ndc-loki-graphql-engine-1\"} | json type, level, request_url=\"detail.http_info.url\", operation_name=\"detail.operation.query.operationName\", latency=\"detail.operation.query_execution_time\" | type = \"http-log\" | level=\"info\" | request_url = \"/v1/graphql\" | unwrap latency [$__auto]))) ",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 5 P95 Latency",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "labelsToFields": true,
+            "reducers": ["sum"]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Field": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Field": "",
+              "operation_name": "Operation Name"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dd0"
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 1,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dd0"
+          },
+          "editorMode": "code",
+          "expr": "{service_name=\"ndc-loki-graphql-engine-1\"} | json | level =~ \"$level\" | type =~ \"$type\"",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs",
+      "type": "logs"
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": ["http-log"],
+          "value": ["http-log"]
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Type",
+        "multi": true,
+        "name": "type",
+        "options": [
+          {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "startup",
+            "value": "startup"
+          },
+          {
+            "selected": false,
+            "text": "startup-log",
+            "value": "startup-log"
+          },
+          {
+            "selected": true,
+            "text": "http-log",
+            "value": "http-log"
+          },
+          {
+            "selected": false,
+            "text": "websocket-log",
+            "value": "websocket-log"
+          },
+          {
+            "selected": false,
+            "text": "event-trigger",
+            "value": "event-trigger"
+          },
+          {
+            "selected": false,
+            "text": "webhook-log",
+            "value": "webhook-log"
+          },
+          {
+            "selected": false,
+            "text": "query-log",
+            "value": "query-log"
+          },
+          {
+            "selected": false,
+            "text": "livequery-poller-log",
+            "value": "livequery-poller-log"
+          },
+          {
+            "selected": false,
+            "text": "scheduled-trigger",
+            "value": "scheduled-trigger"
+          },
+          {
+            "selected": false,
+            "text": "ws-server",
+            "value": "ws-server"
+          },
+          {
+            "selected": false,
+            "text": "action-handler-log",
+            "value": "action-handler-log"
+          },
+          {
+            "selected": false,
+            "text": "event-trigger-process",
+            "value": "event-trigger-process"
+          },
+          {
+            "selected": false,
+            "text": "scheduled-trigger-process",
+            "value": "scheduled-trigger-process"
+          },
+          {
+            "selected": false,
+            "text": "unstructured",
+            "value": "unstructured"
+          },
+          {
+            "selected": false,
+            "text": "jwk-refresh-log",
+            "value": "jwk-refresh-log"
+          },
+          {
+            "selected": false,
+            "text": "pg-client",
+            "value": "pg-client"
+          },
+          {
+            "selected": false,
+            "text": "schema-sync",
+            "value": "schema-sync"
+          },
+          {
+            "selected": false,
+            "text": "metadata",
+            "value": "metadata"
+          },
+          {
+            "selected": false,
+            "text": "resolve-source-log",
+            "value": "resolve-source-log"
+          },
+          {
+            "selected": false,
+            "text": "execution-log",
+            "value": "execution-log"
+          },
+          {
+            "selected": false,
+            "text": "event-trigger-log-cleanup-consumer-error",
+            "value": "event-trigger-log-cleanup-consumer-error"
+          },
+          {
+            "selected": false,
+            "text": "event-trigger-log-cleanup-generator-error",
+            "value": "event-trigger-log-cleanup-generator-error"
+          },
+          {
+            "selected": false,
+            "text": "health-check-log",
+            "value": "health-check-log"
+          },
+          {
+            "selected": false,
+            "text": "schema-sync-thread",
+            "value": "schema-sync-thread"
+          },
+          {
+            "selected": false,
+            "text": "event-trigger-log-cleanup-generator-error",
+            "value": "event-trigger-log-cleanup-generator-error"
+          }
+        ],
+        "query": "startup,startup-log,http-log,websocket-log,event-trigger,webhook-log,query-log,livequery-poller-log,scheduled-trigger,ws-server,action-handler-log,event-trigger-process,scheduled-trigger-process,unstructured,jwk-refresh-log,pg-client,schema-sync,metadata,resolve-source-log,execution-log,event-trigger-log-cleanup-consumer-error,event-trigger-log-cleanup-generator-error,health-check-log,schema-sync-thread,event-trigger-log-cleanup-generator-error",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": ["All"],
+          "value": ["$__all"]
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Level",
+        "multi": true,
+        "name": "level",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "debug",
+            "value": "debug"
+          },
+          {
+            "selected": false,
+            "text": "info",
+            "value": "info"
+          },
+          {
+            "selected": false,
+            "text": "warn",
+            "value": "warn"
+          },
+          {
+            "selected": false,
+            "text": "error",
+            "value": "error"
+          },
+          {
+            "selected": false,
+            "text": "critical",
+            "value": "critical"
+          }
+        ],
+        "query": "debug,info,warn,error,critical",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Loki - GraphQL Engine",
+  "uid": "ce2x4kqqxn4lcc",
+  "version": 1,
+  "weekStart": ""
+}

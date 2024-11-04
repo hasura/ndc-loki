@@ -1,0 +1,41 @@
+name: ndc-loki
+version: "${CLI_VERSION}"
+shortDescription: "CLI plugin for Hasura Loki data connector"
+homepage: https://github.com/hasura/ndc-loki
+hidden: true
+platforms:
+  - selector: darwin-arm64
+    uri: "https://github.com/hasura/ndc-loki/releases/download/${CLI_VERSION}/ndc-loki-darwin-arm64"
+    sha256: "${MACOS_ARM64_SHA256}"
+    bin: "ndc-loki"
+    files:
+      - from: "./ndc-loki-darwin-arm64"
+        to: "ndc-loki"
+  - selector: linux-arm64
+    uri: "https://github.com/hasura/ndc-loki/releases/download/${CLI_VERSION}/ndc-loki-linux-arm64"
+    sha256: "${LINUX_ARM64_SHA256}"
+    bin: "ndc-loki"
+    files:
+      - from: "./ndc-loki-linux-arm64"
+        to: "ndc-loki"
+  - selector: darwin-amd64
+    uri: "https://github.com/hasura/ndc-loki/releases/download/${CLI_VERSION}/ndc-loki-darwin-amd64"
+    sha256: "${MACOS_AMD64_SHA256}"
+    bin: "ndc-loki"
+    files:
+      - from: "./ndc-loki-darwin-amd64"
+        to: "ndc-loki"
+  - selector: windows-amd64
+    uri: "https://github.com/hasura/ndc-loki/releases/download/${CLI_VERSION}/ndc-loki-windows-amd64.exe"
+    sha256: "${WINDOWS_AMD64_SHA256}"
+    bin: "ndc-loki.exe"
+    files:
+      - from: "./ndc-loki-windows-amd64.exe"
+        to: "ndc-loki.exe"
+  - selector: linux-amd64
+    uri: "https://github.com/hasura/ndc-loki/releases/download/${CLI_VERSION}/ndc-loki-linux-amd64"
+    sha256: "${LINUX_AMD64_SHA256}"
+    bin: "ndc-loki"
+    files:
+      - from: "./ndc-loki-linux-amd64"
+        to: "ndc-loki"

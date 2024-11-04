@@ -1,0 +1,60 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: LogDeletionRequest
+  description: the log deletion request item
+  fields:
+    - name: end_time
+      type: Int64!
+    - name: query
+      type: String!
+    - name: start_time
+      type: Int64!
+    - name: status
+      type: String!
+  graphql:
+    typeName: LogDeletionRequest
+    inputTypeName: LogDeletionRequest_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: loki
+      dataConnectorObjectType: LogDeletionRequest
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: LogDeletionRequest
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - end_time
+          - query
+          - start_time
+          - status
+
+---
+kind: Command
+version: v1
+definition:
+  name: loki_log_deletion_requests
+  outputType: "[LogDeletionRequest!]!"
+  source:
+    dataConnectorName: loki
+    dataConnectorCommand:
+      function: loki_log_deletion_requests
+  graphql:
+    rootFieldName: loki_log_deletion_requests
+    rootFieldKind: Query
+  description: list the existing delete requests for the authenticated tenant
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: loki_log_deletion_requests
+  permissions:
+    - role: admin
+      allowExecution: true
+

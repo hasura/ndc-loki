@@ -1,0 +1,571 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 6,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total"
+          }
+        ]
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetTop5GraphQLRequests",
+          "parsingOptions": [
+            {
+              "dataPath": "http_log_aggregate",
+              "labelOptions": [
+                {
+                  "name": "operation_name",
+                  "type": "field",
+                  "value": "operation_name"
+                }
+              ],
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetTop5GraphQLRequests ($from: Timestamp!, $to: Timestamp!, $interval_ms: Duration!, $levels: JSON) {\n  http_log_aggregate(args: {\n    aggregations: [{\n      count_over_time: $interval_ms\n    }, {\n      sum: {\n        by: [operation_name]\n      }\n    }, {\n      topk: {\n        k: 5\n      }\n    }]\n  }, where: {\n    timestamp: {\n      _gt: $from,\n      _lt: $to\n    },\n    level: {\n      _in: $levels\n    }\n    request_url: {\n      _eq: \"/v1/graphql\"\n    }\n  }) {\n    metric_value\n    operation_name\n   \ttimestamp\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 5 GraphQL requests",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "labelsToFields": true,
+            "reducers": ["sum"]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Field": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Field": "",
+              "operation_name": "Operation Name"
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Total"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "Top5P95Latency",
+          "parsingOptions": [
+            {
+              "dataPath": "http_log_aggregate",
+              "labelOptions": [
+                {
+                  "name": "operation_name",
+                  "type": "field",
+                  "value": "operation_name"
+                }
+              ],
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query Top5P95Latency ($from: Timestamp!, $to: Timestamp!, $interval_ms: Duration!) {\n  http_log_aggregate(args: {\n    aggregations: [{\n      quantile_over_time: {\n        quantile: 0.95,\n        range: $interval_ms\n        unwrap: latency\n      }\n    }, {\n      sum: {\n        by: [operation_name]\n      }\n    }, {\n      topk: {\n        k: 5\n      }\n    }]\n  }, where: {\n    timestamp: {\n      _gt: $from,\n      _lt: $to\n    },\n    level: {\n      _eq: \"info\"\n    }\n    request_url: {\n      _eq: \"/v1/graphql\"\n    }\n  }) {\n    metric_value\n    operation_name\n   \ttimestamp\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 5 P95 Latency",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "labelsToFields": true,
+            "reducers": ["sum"]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Field": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Field": "",
+              "operation_name": "Operation Name"
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Total"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 1,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetHasuraLogs",
+          "parsingOptions": [
+            {
+              "dataPath": "hasura_log",
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetHasuraLogs ($from: Timestamp!, $to: Timestamp!, $levels: JSON, $types: JSON) {\n  hasura_log(args: {}, where: {\n    timestamp: {\n      _gt: $from,\n      _lt: $to\n    },\n    level: {\n      _in: $levels\n    },\n    type: {\n      _in: $types\n    }\n  }) {\n    log_line\n    level\n    type\n   \ttimestamp\n  }\n}\n",
+          "refId": "A",
+          "variablesWithFullInterpolation": "{\n  \"levels\": \"$level\",\n  \"types\": \"$type\"\n}"
+        }
+      ],
+      "title": "Logs",
+      "type": "logs"
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": ["http-log"],
+          "value": ["http-log"]
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Type",
+        "multi": true,
+        "name": "type",
+        "options": [
+          {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "startup",
+            "value": "startup"
+          },
+          {
+            "selected": false,
+            "text": "startup-log",
+            "value": "startup-log"
+          },
+          {
+            "selected": true,
+            "text": "http-log",
+            "value": "http-log"
+          },
+          {
+            "selected": false,
+            "text": "websocket-log",
+            "value": "websocket-log"
+          },
+          {
+            "selected": false,
+            "text": "event-trigger",
+            "value": "event-trigger"
+          },
+          {
+            "selected": false,
+            "text": "webhook-log",
+            "value": "webhook-log"
+          },
+          {
+            "selected": false,
+            "text": "query-log",
+            "value": "query-log"
+          },
+          {
+            "selected": false,
+            "text": "livequery-poller-log",
+            "value": "livequery-poller-log"
+          },
+          {
+            "selected": false,
+            "text": "scheduled-trigger",
+            "value": "scheduled-trigger"
+          },
+          {
+            "selected": false,
+            "text": "ws-server",
+            "value": "ws-server"
+          },
+          {
+            "selected": false,
+            "text": "action-handler-log",
+            "value": "action-handler-log"
+          },
+          {
+            "selected": false,
+            "text": "event-trigger-process",
+            "value": "event-trigger-process"
+          },
+          {
+            "selected": false,
+            "text": "scheduled-trigger-process",
+            "value": "scheduled-trigger-process"
+          },
+          {
+            "selected": false,
+            "text": "unstructured",
+            "value": "unstructured"
+          },
+          {
+            "selected": false,
+            "text": "jwk-refresh-log",
+            "value": "jwk-refresh-log"
+          },
+          {
+            "selected": false,
+            "text": "pg-client",
+            "value": "pg-client"
+          },
+          {
+            "selected": false,
+            "text": "schema-sync",
+            "value": "schema-sync"
+          },
+          {
+            "selected": false,
+            "text": "metadata",
+            "value": "metadata"
+          },
+          {
+            "selected": false,
+            "text": "resolve-source-log",
+            "value": "resolve-source-log"
+          },
+          {
+            "selected": false,
+            "text": "execution-log",
+            "value": "execution-log"
+          },
+          {
+            "selected": false,
+            "text": "event-trigger-log-cleanup-consumer-error",
+            "value": "event-trigger-log-cleanup-consumer-error"
+          },
+          {
+            "selected": false,
+            "text": "event-trigger-log-cleanup-generator-error",
+            "value": "event-trigger-log-cleanup-generator-error"
+          },
+          {
+            "selected": false,
+            "text": "health-check-log",
+            "value": "health-check-log"
+          },
+          {
+            "selected": false,
+            "text": "schema-sync-thread",
+            "value": "schema-sync-thread"
+          },
+          {
+            "selected": false,
+            "text": "event-trigger-log-cleanup-generator-error",
+            "value": "event-trigger-log-cleanup-generator-error"
+          }
+        ],
+        "query": "startup,startup-log,http-log,websocket-log,event-trigger,webhook-log,query-log,livequery-poller-log,scheduled-trigger,ws-server,action-handler-log,event-trigger-process,scheduled-trigger-process,unstructured,jwk-refresh-log,pg-client,schema-sync,metadata,resolve-source-log,execution-log,event-trigger-log-cleanup-consumer-error,event-trigger-log-cleanup-generator-error,health-check-log,schema-sync-thread,event-trigger-log-cleanup-generator-error",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": ["All"],
+          "value": ["$__all"]
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Level",
+        "multi": true,
+        "name": "level",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "debug",
+            "value": "debug"
+          },
+          {
+            "selected": false,
+            "text": "info",
+            "value": "info"
+          },
+          {
+            "selected": false,
+            "text": "warn",
+            "value": "warn"
+          },
+          {
+            "selected": false,
+            "text": "error",
+            "value": "error"
+          },
+          {
+            "selected": false,
+            "text": "critical",
+            "value": "critical"
+          }
+        ],
+        "query": "debug,info,warn,error,critical",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "GraphQL - Hasura GraphQL Engine",
+  "uid": "ce2x4kqqxn4ldd",
+  "version": 4,
+  "weekStart": ""
+}

@@ -1,0 +1,1537 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Nginx access log analytics dashboard using Promtail and Loki v2+. Prometheus datasource is created from Loki service.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": 13865,
+  "graphTooltip": 0,
+  "id": 2,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "id": 22,
+      "interval": "1h",
+      "maxDataPoints": 1,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["mean"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetLast1HourUserVisits",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log_aggregate",
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetLast1HourUserVisits ($from: Timestamp!, $to: Timestamp!) {\n  nginx_log_aggregate(args: {\n    aggregations: [{\n      count_over_time: \"1h\"\n    }, {\n      sum: {\n        by: [remote_addr]\n      }\n    }, {\n      count: {}\n    }]\n  }, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n  }) {\n    timestamp\n    metric_value\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "1h",
+      "title": "Unique user visits",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 31,
+      "interval": "24h",
+      "maxDataPoints": 1,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["mean"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetLast1HourUserVisits",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log_aggregate",
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetLast1HourUserVisits ($from: Timestamp!, $to: Timestamp!) {\n  nginx_log_aggregate(args: {\n    aggregations: [{\n      count_over_time: \"24h\"\n    }, {\n      sum: {\n        by: [remote_addr]\n      }\n    }, {\n      count: {}\n    }]\n  }, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n  }) {\n    timestamp\n    metric_value\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "24h",
+      "title": "Unique user visits",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 33,
+      "interval": "2d",
+      "maxDataPoints": 1,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["mean"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetLast1HourUserVisits",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log_aggregate",
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetLast1HourUserVisits ($from: Timestamp!, $to: Timestamp!) {\n  nginx_log_aggregate(args: {\n    aggregations: [{\n      count_over_time: \"2d\"\n    }, {\n      sum: {\n        by: [remote_addr]\n      }\n    }, {\n      count: {}\n    }]\n  }, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n  }) {\n    timestamp\n    metric_value\n  }\n}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "2d",
+      "title": "Unique user visits",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 39,
+      "interval": "7d",
+      "maxDataPoints": 1,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["mean"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetLast1HourUserVisits",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log_aggregate",
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetLast1HourUserVisits ($from: Timestamp!, $to: Timestamp!) {\n  nginx_log_aggregate(args: {\n    aggregations: [{\n      count_over_time: \"7d\"\n    }, {\n      sum: {\n        by: [remote_addr]\n      }\n    }, {\n      count: {}\n    }]\n  }, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n  }) {\n    timestamp\n    metric_value\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "7d",
+      "title": "Unique user visits",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "id": 41,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Visitor Graphs",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 42,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetLast1HourUserVisits",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log_aggregate",
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetLast1HourUserVisits ($from: Timestamp!, $to: Timestamp!) {\n  nginx_log_aggregate(args: {\n    aggregations: [{\n      count_over_time: \"7d\"\n    }, {\n      sum: {\n        by: [remote_addr]\n      }\n    }, {\n      count: {}\n    }]\n  }, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n  }) {\n    timestamp\n    metric_value\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Unique User Visits",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 28,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Sources & Behaviours",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "displayName": "${__field.labels.remote_addr}",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Requests"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 0,
+        "y": 13
+      },
+      "id": 3,
+      "interval": "30m",
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Requests"
+          }
+        ]
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetTop5HourUserVisits",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log_aggregate",
+              "labelOptions": [
+                {
+                  "name": "remote_addr",
+                  "type": "field",
+                  "value": "remote_addr"
+                }
+              ],
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetTop5HourUserVisits ($from: Timestamp!, $to: Timestamp!, $interval_ms: Duration!) {\n  nginx_log_aggregate(args: {\n    aggregations: [{\n      count_over_time: $interval_ms\n    }, {\n      sum: {\n        by: [remote_addr]\n      }\n    }, {\n      topk: {\n        k: 5\n      }\n    }]\n  }, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n  }) {\n    remote_addr\n    timestamp\n    metric_value\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Top IPs",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": true,
+            "mode": "seriesToRows",
+            "reducers": ["sum"]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Field": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Field": "",
+              "Total": "Requests",
+              "remote_addr": "IP Address"
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Requests"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 15,
+        "x": 9,
+        "y": 13
+      },
+      "id": 12,
+      "interval": "5m",
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total"
+          }
+        ]
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetTop10RequestPages",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log_aggregate",
+              "labelOptions": [
+                {
+                  "name": "request",
+                  "type": "field",
+                  "value": "request"
+                }
+              ],
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetTop10RequestPages ($from: Timestamp!, $to: Timestamp!, $interval_ms: Duration!) {\n  nginx_log_aggregate(args: {\n    aggregations: [{\n      count_over_time: $interval_ms\n    }, {\n      sum: {\n        by: [request]\n      }\n    }, {\n      topk: {\n        k: 10\n      }\n    }]\n  }, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n  }) {\n    request\n    timestamp\n    metric_value\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Top Requested Pages - Excluding '/'",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "labelsToFields": true,
+            "reducers": ["sum"]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Field": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Field": "",
+              "Total": "",
+              "request": "Page"
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Total"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 24,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Requests & HTTP Status",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "HTTP ${__field.labels.status}",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 15,
+        "x": 0,
+        "y": 22
+      },
+      "id": 5,
+      "interval": "30s",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["sum"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetRequestsPerStatusCode",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log_aggregate",
+              "labelOptions": [
+                {
+                  "name": "status",
+                  "type": "field",
+                  "value": "status"
+                }
+              ],
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetRequestsPerStatusCode ($from: Timestamp!, $to: Timestamp!, $interval_ms: Duration!) {\n  nginx_log_aggregate(args: {\n    aggregations: [{\n      count_over_time: $interval_ms\n    }, {\n      sum: {\n        by: [status]\n      }\n    }]\n  }, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n  }) {\n    status\n    timestamp\n    metric_value\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Requests per status code",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 9,
+        "x": 15,
+        "y": 22
+      },
+      "id": 4,
+      "interval": "30s",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["sum"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetTotalNginxRequests",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log_aggregate",
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetTotalNginxRequests ($from: Timestamp!, $to: Timestamp!, $interval_ms: Duration!) {\n  nginx_log_aggregate(args: {\n    aggregations: [{\n      count_over_time: $interval_ms\n    }, {\n      sum: {}\n    }]\n  }, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n  }) {\n    timestamp\n    metric_value\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Total requests  ",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dd0"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 9,
+        "x": 15,
+        "y": 26
+      },
+      "id": 19,
+      "maxDataPoints": 1,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["mean"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dd0"
+          },
+          "editorMode": "code",
+          "expr": "(sum by(service_name) (rate({service_name=\"ndc-loki-gateway-1\"} |~ `^[0-9]+\\.` | pattern `<remote_addr> - <remote_user> [<time_local>] \"<request>\" <status> <body_bytes_sent> \"<http_referer>\" \"<http_user_agent>\" <request_length> <request_time> [<proxy_upstream_name>] [<proxy_alternative_upstream_name>] <upstream_addr> <upstream_response_length> <upstream_response_time> <upstream_status> <req_id>` | status >= 500 [$__auto])) / sum by(service_name) (rate({service_name=\"ndc-loki-gateway-1\"} |~ `^[0-9]+\\.` | pattern `<remote_addr> - <remote_user> [<time_local>] \"<request>\" <status> <body_bytes_sent> \"<http_referer>\" \"<http_user_agent>\" <request_length> <request_time> [<proxy_upstream_name>] [<proxy_alternative_upstream_name>] <upstream_addr> <upstream_response_length> <upstream_response_time> <upstream_status> <req_id>` [$__auto])))",
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "% of 5xx requests ",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 9,
+        "x": 15,
+        "y": 30
+      },
+      "id": 8,
+      "interval": "10m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["sum"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetRequestsPerStatusCode",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log_aggregate",
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetRequestsPerStatusCode ($from: Timestamp!, $to: Timestamp!, $interval_ms: Duration!) {\n  nginx_log_aggregate(args: {\n    aggregations: [{\n      sum_over_time: {\n        range: $interval_ms\n        unwrap: body_bytes_sent\n      }\n    }, {\n      sum: {}\n    }]\n  }, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n  }) {\n    timestamp\n    metric_value\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Bytes Sent",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": ["sum"]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Total": "Bytes Sent"
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 34
+      },
+      "id": 11,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetNginxLogs",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log",
+              "labelOptions": [],
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetNginxLogs ($from: Timestamp!, $to: Timestamp!) {\n  nginx_log(args: {}, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n  }) {\n    log_line\n    remote_addr\n    status\n    timestamp\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Recent requests",
+      "type": "logs"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "id": 26,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Request Statistics Over Time",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 100,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "displayName": "${__field.labels.status}",
+          "mappings": [],
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "{statuscode=\"200\"} 200"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "{statuscode=\"404\"} 404"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "{statuscode=\"500\"} 500"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 0,
+        "y": 49
+      },
+      "id": 2,
+      "interval": "30s",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetNginxHTTPRequests",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log_aggregate",
+              "labelOptions": [
+                {
+                  "name": "status",
+                  "type": "field",
+                  "value": "status"
+                }
+              ],
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetNginxHTTPRequests ($from: Timestamp!, $to: Timestamp!, $interval_ms: Duration!) {\n  nginx_log_aggregate(args: {\n    aggregations: [{\n      count_over_time: $interval_ms\n    }, {\n      sum: {\n        by: [status]\n      }\n    }]\n  }, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n  }) {\n    status\n    timestamp\n    metric_value\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "title": "HTTP requests",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "retrodaredevil-wildgraphql-datasource",
+        "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 100,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Bytes sent"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "appfelstrudel"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 13,
+        "x": 11,
+        "y": 49
+      },
+      "id": 9,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "retrodaredevil-wildgraphql-datasource",
+            "uid": "9c6ae4eb-3ec7-4aed-a2da-ee51f9303dc8"
+          },
+          "operationName": "GetNginxBytesSent",
+          "parsingOptions": [
+            {
+              "dataPath": "nginx_log_aggregate",
+              "timeFields": [
+                {
+                  "timePath": "timestamp"
+                }
+              ]
+            }
+          ],
+          "queryText": "query GetNginxBytesSent ($from: Timestamp!, $to: Timestamp!, $interval_ms: Duration!) {\n  nginx_log_aggregate(args: {\n    aggregations: [{\n      sum_over_time: {\n        range: $interval_ms,\n        unwrap: body_bytes_sent\n      }\n    }]\n  }, where: {\n\t\ttimestamp: {\n      _gt: $from,\n      _lt: $to\n    }\n    status: {\n      _eq: \"200\"\n    }\n  }) {\n    status\n    timestamp\n    metric_value\n  }\n}\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Bytes Sent",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "GraphQL - NGINX / LOKI v2+ Data Source",
+  "uid": "graphql-nginx01-web-analytics",
+  "version": 3,
+  "weekStart": ""
+}

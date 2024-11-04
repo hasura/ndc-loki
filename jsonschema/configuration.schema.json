@@ -1,0 +1,787 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/hasura/ndc-loki/connector/metadata/configuration",
+  "$ref": "#/$defs/Configuration",
+  "$defs": {
+    "ClientSettings": {
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/EnvString"
+        },
+        "headers": {
+          "additionalProperties": {
+            "$ref": "#/$defs/EnvString"
+          },
+          "type": "object"
+        },
+        "timeout": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "url",
+        "headers",
+        "timeout"
+      ]
+    },
+    "Configuration": {
+      "properties": {
+        "connection_settings": {
+          "$ref": "#/$defs/ClientSettings"
+        },
+        "metadata": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "runtime": {
+          "$ref": "#/$defs/RuntimeSettings"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "connection_settings",
+        "metadata",
+        "runtime"
+      ]
+    },
+    "EnvString": {
+      "oneOf": [
+        {
+          "required": [
+            "value"
+          ],
+          "title": "value"
+        },
+        {
+          "required": [
+            "env"
+          ],
+          "title": "env"
+        }
+      ],
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "env": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "LabelFilterSetting": {
+      "properties": {
+        "operator": {
+          "type": "string",
+          "enum": [
+            "_eq",
+            "_neq",
+            "_regex",
+            "_nregex"
+          ],
+          "default": "_eq"
+        },
+        "value": {
+          "type": "string"
+        },
+        "static": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "operator",
+        "value"
+      ]
+    },
+    "LabelFormatRule": {
+      "oneOf": [
+        {
+          "required": [
+            "source"
+          ],
+          "title": "source_label"
+        },
+        {
+          "required": [
+            "template"
+          ],
+          "title": "template"
+        }
+      ],
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "template": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "source",
+        "template"
+      ]
+    },
+    "LabelInfo": {
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Metadata": {
+      "properties": {
+        "models": {
+          "additionalProperties": {
+            "$ref": "#/$defs/ModelInfo"
+          },
+          "type": "object"
+        },
+        "native_operations": {
+          "$ref": "#/$defs/NativeOperations"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "models",
+        "native_operations"
+      ]
+    },
+    "ModelField": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "selector": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ModelInfo": {
+      "properties": {
+        "pipelines": {
+          "items": {
+            "$ref": "#/$defs/ModelPipeline"
+          },
+          "type": "array"
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "labels": {
+          "additionalProperties": {
+            "$ref": "#/$defs/ModelLabelInfo"
+          },
+          "type": "object"
+        },
+        "decolorize": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "pipelines",
+        "labels"
+      ]
+    },
+    "ModelLabelInfo": {
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "filter": {
+          "$ref": "#/$defs/LabelFilterSetting"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ModelPipeline": {
+      "oneOf": [
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "line_filter"
+              ]
+            },
+            "operator": {
+              "type": "string",
+              "enum": [
+                "_like",
+                "_ilike",
+                "_nlike",
+                "_nilike",
+                "_regex",
+                "_nregex",
+                "_ip",
+                "_nip"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "type",
+            "operator",
+            "value"
+          ]
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "label_filter"
+              ]
+            },
+            "name": {
+              "type": "string"
+            },
+            "operator": {
+              "type": "string",
+              "enum": [
+                "_eq",
+                "_neq",
+                "_lt",
+                "_lte",
+                "_gt",
+                "_gte",
+                "_regex",
+                "_nregex",
+                "_ip",
+                "_nip"
+              ]
+            },
+            "value": true
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "type",
+            "name",
+            "operator",
+            "value"
+          ]
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "json"
+              ]
+            },
+            "fields": {
+              "additionalProperties": {
+                "$ref": "#/$defs/ModelField"
+              },
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "type",
+            "fields"
+          ]
+        },
+        {
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "logfmt"
+              ]
+            },
+            "fields": {
+              "additionalProperties": {
+                "$ref": "#/$defs/ModelField"
+              },
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "type",
+            "fields"
+          ]
+        },
+        {
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        {
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "pattern"
+              ]
+            },
+            "pattern": {
+              "type": "string"
+            },
+            "fields": {
+              "additionalProperties": {
+                "$ref": "#/$defs/ModelField"
+              },
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "type",
+            "pattern",
+            "fields"
+          ]
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "regexp"
+              ]
+            },
+            "pattern": {
+              "type": "string"
+            },
+            "fields": {
+              "additionalProperties": {
+                "$ref": "#/$defs/ModelField"
+              },
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "type",
+            "pattern",
+            "fields"
+          ]
+        },
+        {
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "unpack"
+              ]
+            },
+            "fields": {
+              "additionalProperties": {
+                "$ref": "#/$defs/ModelField"
+              },
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "type",
+            "fields"
+          ]
+        },
+        {
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "line_format"
+              ]
+            },
+            "template": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "type",
+            "template"
+          ]
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "label_format"
+              ]
+            },
+            "labels": {
+              "additionalProperties": {
+                "$ref": "#/$defs/LabelFormatRule"
+              },
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "type",
+            "labels"
+          ]
+        },
+        {
+          "oneOf": [
+            {
+              "required": [
+                "source"
+              ],
+              "title": "source_label"
+            },
+            {
+              "required": [
+                "template"
+              ],
+              "title": "template"
+            }
+          ],
+          "properties": {
+            "source": {
+              "type": "string"
+            },
+            "template": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "source",
+            "template"
+          ]
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "keep"
+              ]
+            },
+            "fields": {
+              "additionalProperties": {
+                "$ref": "#/$defs/ModelField"
+              },
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "type",
+            "fields"
+          ]
+        },
+        {
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "drop"
+              ]
+            },
+            "fields": {
+              "additionalProperties": {
+                "$ref": "#/$defs/ModelField"
+              },
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "type",
+            "fields"
+          ]
+        },
+        {
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        }
+      ],
+      "description": "LogPipeline abstracts the a log pipeline interface."
+    },
+    "NativeOperations": {
+      "properties": {
+        "queries": {
+          "additionalProperties": {
+            "$ref": "#/$defs/NativeQuery"
+          },
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "queries"
+      ]
+    },
+    "NativeQuery": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "stream",
+            "metric"
+          ]
+        },
+        "query": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "labels": {
+          "additionalProperties": {
+            "$ref": "#/$defs/LabelInfo"
+          },
+          "type": "object"
+        },
+        "arguments": {
+          "additionalProperties": {
+            "$ref": "#/$defs/NativeQueryArgumentInfo"
+          },
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "type",
+        "query",
+        "labels",
+        "arguments"
+      ]
+    },
+    "NativeQueryArgumentInfo": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Int64",
+            "Float64",
+            "String",
+            "Duration"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "type"
+      ]
+    },
+    "RuntimeFormatSettings": {
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "enum": [
+            "rfc3339",
+            "unix"
+          ],
+          "default": "unix"
+        },
+        "value": {
+          "type": "string",
+          "enum": [
+            "string",
+            "float64"
+          ],
+          "default": "string"
+        },
+        "nan": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "inf": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "negative_inf": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "timestamp",
+        "value",
+        "nan",
+        "inf",
+        "negative_inf"
+      ]
+    },
+    "RuntimeSettings": {
+      "properties": {
+        "flat": {
+          "type": "boolean"
+        },
+        "unix_time_unit": {
+          "type": "string",
+          "enum": [
+            "s",
+            "ms",
+            "us",
+            "ns"
+          ],
+          "default": "s"
+        },
+        "format": {
+          "$ref": "#/$defs/RuntimeFormatSettings"
+        },
+        "query_concurrency_limit": {
+          "type": "integer"
+        },
+        "mutation_concurrency_limit": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "flat",
+        "unix_time_unit",
+        "format"
+      ]
+    }
+  }
+}

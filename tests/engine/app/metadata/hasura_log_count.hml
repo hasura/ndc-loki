@@ -1,0 +1,131 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: HasuraLogCount
+  fields:
+    - name: log_line
+      type: LogLine!
+      description: A log line if the flat values setting is enabled
+    - name: metric_value
+      type: Decimal!
+      description: Value of the instant query or the last value of a range query
+    - name: metric_values
+      type: "[MetricValue!]!"
+      description: List of metric values grouped by unique labels
+    - name: original_labels
+      type: LabelSet!
+      description: Labels of the metric
+    - name: timestamp
+      type: Timestamp!
+      description: An instant timestamp or the last timestamp of a range query result
+    - name: type
+      type: Label!
+  graphql:
+    typeName: HasuraLogCount
+    inputTypeName: HasuraLogCount_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: loki
+      dataConnectorObjectType: HasuraLogCount
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: HasuraLogCount
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - log_line
+          - metric_value
+          - metric_values
+          - original_labels
+          - timestamp
+          - type
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: HasuraLogCount_bool_exp
+  operand:
+    object:
+      type: HasuraLogCount
+      comparableFields:
+        - fieldName: log_line
+          booleanExpressionType: LogLine_bool_exp
+        - fieldName: metric_value
+          booleanExpressionType: Decimal_bool_exp
+        - fieldName: original_labels
+          booleanExpressionType: LabelSet_bool_exp
+        - fieldName: timestamp
+          booleanExpressionType: Timestamp_bool_exp
+        - fieldName: type
+          booleanExpressionType: Label_bool_exp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: HasuraLogCount_bool_exp
+
+---
+kind: Model
+version: v1
+definition:
+  name: hasura_log_count
+  objectType: HasuraLogCount
+  arguments:
+    - name: flat
+      type: Boolean
+      description: Flatten grouped values out the root array
+    - name: level
+      type: String!
+    - name: offset
+      type: Duration
+      description: The offset modifier allows changing the time offset for individual
+        instant and range vectors in a query
+    - name: step
+      type: Duration
+      description: Query resolution step width in duration format or float number of seconds
+    - name: type
+      type: String!
+  source:
+    dataConnectorName: loki
+    collection: hasura_log_count
+  filterExpressionType: HasuraLogCount_bool_exp
+  orderableFields:
+    - fieldName: log_line
+      orderByDirections:
+        enableAll: true
+    - fieldName: metric_value
+      orderByDirections:
+        enableAll: true
+    - fieldName: original_labels
+      orderByDirections:
+        enableAll: true
+    - fieldName: timestamp
+      orderByDirections:
+        enableAll: true
+    - fieldName: type
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: hasura_log_count
+    selectUniques: []
+    argumentsInputType: hasura_log_count_arguments
+    orderByExpressionType: hasura_log_count_order_by
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: hasura_log_count
+  permissions:
+    - role: admin
+      select:
+        filter: null
+

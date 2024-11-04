@@ -1,0 +1,125 @@
+volumes:
+  grafana_data: {}
+  postgres_data: {}
+
+services:
+  ndc-loki:
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    volumes:
+      - ./tests/configuration:/etc/connector:ro
+    extra_hosts:
+      - local.hasura.dev=host-gateway
+    environment:
+      CONNECTION_URL: http://gateway:3100
+      LOKI_ORG_ID: ""
+      LOKI_TOKEN: ""
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://local.hasura.dev:4317
+      OTEL_METRICS_EXPORTER: prometheus
+      HASURA_LOG_LEVEL: debug
+
+  postgres:
+    image: postgres:17.0
+    restart: always
+    ports:
+      - "5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+
+  graphql-engine:
+    image: hasura/graphql-engine:v2.44.0.cli-migrations-v3
+    ports:
+      - "8081:8080"
+    restart: always
+    depends_on:
+      postgres:
+        required: true
+        condition: service_started
+    volumes:
+      - ./tests/graphql-engine/migrations:/hasura-migrations
+      - ./tests/graphql-engine/metadata:/hasura-metadata
+    environment:
+      ## postgres database to store Hasura metadata
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      DATA_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      ## enable the console served by server
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+      ## enable debugging mode. It is recommended to disable this in production
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup,http-log,webhook-log,websocket-log,query-log
+      ## uncomment next line to run console offline (i.e load console assets from server instead of CDN)
+      # HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: /srv/console-assets
+      ## uncomment next line to set an admin secret
+      # HASURA_GRAPHQL_ADMIN_SECRET: randomsecret
+
+  loki:
+    image: grafana/loki:3.2.0
+    command: "-config.file=/etc/loki/config.yaml"
+    ports:
+      - 3100
+      - 7946
+      - 9095
+    volumes:
+      - ./tests/loki/loki-config.yaml:/etc/loki/config.yaml
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  alloy:
+    image: grafana/alloy:latest
+    volumes:
+      - ./tests/loki/alloy-local-config.yaml:/etc/alloy/config.alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
+    ports:
+      - 12345:12345
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./tests/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./tests/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  gateway:
+    image: nginx:latest
+    depends_on:
+      - loki
+    volumes:
+      - ./tests/nginx/nginx.conf:/etc/nginx/nginx.conf
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        /docker-entrypoint.sh nginx -g "daemon off;"
+    ports:
+      - "3100:3100"
+    healthcheck:
+      test: ["CMD", "service", "nginx", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

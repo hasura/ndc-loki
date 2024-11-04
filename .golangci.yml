@@ -1,0 +1,59 @@
+linters:
+  enable-all: true
+  disable:
+    # - containedctx
+    - dupl
+    # - err113
+    - lll
+    # - gocognit
+    - godot
+    - gofumpt
+    # - nestif
+    - gomnd
+    - funlen
+    # - gomoddirectives
+    - depguard
+    # - gosec
+    # - revive
+    # - cyclop
+    - wsl
+    # - wrapcheck
+    # - varnamelen
+    # - nlreturn
+    # - exhaustive
+    # - exhaustruct
+    # - gocyclo
+    # - prealloc
+    # - ireturn
+    # - gochecknoglobals
+    # - godox
+    # - stylecheck
+    # - nilnil
+    # - maintidx
+    - mnd
+    - tagliatelle
+    # - noctx
+    - tagalign
+    - gochecknoinits
+    # - execinquery
+issues:
+  exclude-files:
+    - ".*_test\\.go$"
+
+linters-settings:
+  funlen:
+    # Checks the number of lines in a function.
+    # If lower than 0, disable the check.
+    # Default: 60
+    lines: -1
+    # Checks the number of statements in a function.
+    # If lower than 0, disable the check.
+    # Default: 40
+    statements: 100
+    # Ignore comments when counting lines.
+    # Default false
+    ignore-comments: true
+  nestif:
+    # Minimal complexity of if statements to report.
+    # Default: 5
+    min-complexity: 6

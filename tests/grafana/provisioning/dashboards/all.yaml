@@ -1,0 +1,27 @@
+apiVersion: 1
+
+providers:
+  - name: "default"
+    orgId: 1
+    folder: ""
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    options:
+      path: /var/lib/grafana/dashboards
+
+  - name: "loki"
+    orgId: 1
+    folder: "Loki"
+    type: file
+    disableDeletion: false
+    options:
+      path: /var/lib/grafana/dashboards/loki
+
+  - name: "graphql"
+    orgId: 1
+    folder: "GraphQL"
+    type: file
+    disableDeletion: false
+    options:
+      path: /var/lib/grafana/dashboards/graphql
