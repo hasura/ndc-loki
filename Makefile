@@ -1,12 +1,17 @@
 VERSION ?= $(shell date +"%Y%m%d")
 OUTPUT_DIR := _output
 
+.PHONY: start
+start:
+	docker compose -f compose.yaml -f tests/engine/compose.yaml --env-file tests/engine/.env up --build -d
+
 .PHONY: start-ddn
 start-ddn:
 	HASURA_DDN_PAT=$$(ddn auth print-pat) docker compose -f compose.yaml -f tests/engine/compose.yaml --env-file tests/engine/.env up --build -d
 
 .PHONY: stop-ddn
 stop-ddn:
+	docker compose -f compose.yaml -f tests/engine/compose.yaml down --remove-orphans
 
 .PHONY: format
 format:

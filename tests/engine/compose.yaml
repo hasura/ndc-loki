@@ -22,7 +22,7 @@ services:
     command:
       - --config=/etc/otel-collector-config.yaml
     environment:
-      HASURA_DDN_PAT: ${HASURA_DDN_PAT}
+      HASURA_DDN_PAT: ${HASURA_DDN_PAT:-test}
     image: otel/opentelemetry-collector:0.104.0
     ports:
       - mode: ingress

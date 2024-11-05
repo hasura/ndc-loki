@@ -1,6 +1,6 @@
 - name: album_insert
-  webhook: http://localhost:8080/v1/graphql
-  schedule: '* * * * *'
+  webhook: http://gateway:8080/v1/graphql
+  schedule: "* * * * *"
   include_in_metadata: true
   payload:
     operationName: CreateAlbum
@@ -19,23 +19,36 @@
     template_engine: Kriti
     version: 2
 - name: cron_failure
-  webhook: http://localhost:8080
-  schedule: '* * * * *'
+  webhook: http://gateway:8080/v1/graphql
+  schedule: "* * * * *"
   include_in_metadata: true
   payload: {}
+  request_transform:
+    body:
+      action: transform
+      template: |-
+        {
+          "operationName": "GetAlbumError",
+          "query": "query GetAlbumError { Album(limit: 1) { foo }}",
+          "variables": null
+        }
+    template_engine: Kriti
+    version: 2
   comment: ""
 - name: cron_success
-  webhook: http://localhost:8080/v1/version
-  schedule: '* * * * *'
+  webhook: http://gateway:8080/v1/graphql
+  schedule: "* * * * *"
   include_in_metadata: true
   payload: {}
   comment: ""
   request_transform:
-    method: GET
-    query_params: {}
-    request_headers:
-      add_headers: {}
-      remove_headers:
-        - content-type
+    body:
+      action: transform
+      template: |-
+        {
+          "operationName": "GetAlbum",
+          "query": "query GetAlbum { Album(limit: 1) { Title ArtistId }}",
+          "variables": null
+        }
     template_engine: Kriti
     version: 2

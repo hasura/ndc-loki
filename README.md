@@ -4,20 +4,19 @@ The Hasura Loki Connector allows for connecting to a Loki database giving you an
 
 This connector is built using the [Go Data Connector SDK](https://github.com/hasura/ndc-sdk-go) and implements the [Data Connector Spec](https://github.com/hasura/ndc-spec).
 
-## Development
+## Get Started
 
-### Get started
+Checkout [the official quickstart documentation of Hasura](https://hasura.io/docs/3.0/getting-started/quickstart). By default, the connector serves [Loki HTTP APIs](https://grafana.com/docs/loki/latest/reference/loki-http-api/). You can execute LogQL queries directly.
 
-#### Start Docker services
+## Documentation
 
-```sh
-make start-ddn
-```
+- [Concepts](./docs/concepts.md)
+- [Integrate Loki Connector with Grafana](./docs/grafana.md)
 
-#### Introspect and build DDN metadata
+## Contributing
 
-```sh
-make build-supergraph-test
-```
+Check out our [contributing guide](./docs/contributing.md) for more details.
 
-Browse the engine console at http://localhost:3000 and Grafana at http://localhost:3001
+## License
+
+Loki Connector are available under the [Apache License 2.0](./LICENSE).

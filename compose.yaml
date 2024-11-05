@@ -89,10 +89,10 @@ services:
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_SECURITY_ADMIN_PASSWORD=admin
-
     ports:
       - "3001:3000"
     volumes:
+      - grafana_data:/var/lib/grafana
       - ./tests/grafana/provisioning:/etc/grafana/provisioning:ro
       - ./tests/grafana/dashboards:/var/lib/grafana/dashboards:ro
     healthcheck:
@@ -110,7 +110,7 @@ services:
     depends_on:
       - loki
     volumes:
-      - ./tests/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./tests/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     entrypoint:
       - sh
       - -euc
