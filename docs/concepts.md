@@ -8,7 +8,7 @@
 Model is a structured definition of a prepared LogQL query to define:
 
 - Available labels.
-- Pipelines to pre-filter, parse fields and format the log line.
+- Pipelines to pre-filter, parse fields, and format the log line.
 
 The equivalent query collections always prepend the prepared query to every request.
 
@@ -53,13 +53,13 @@ metadata:
             static: true
 ```
 
-The model use the `pattern` parser to parse fields from the raw log line. Labels and fields will be available in the `nginx_log` collection. All GraphQL query request of this model will have a prefix:
+The model uses the `pattern` parser to parse fields from the raw log line. Labels and fields will be available in the `nginx_log` collection. All GraphQL query requests of this model will have a prefix:
 
 ```
 {container="ndc-loki-gateway-1", service_name="ndc-loki-gateway-1"} |~ `^[0-9]+\.` | pattern `<remote_addr> - <remote_user> [<time_local>] "<request>" <status> <body_bytes_sent> "<http_referer>" "<http_user_agent>" <request_length> <request_time> [<proxy_upstream_name>] [<proxy_alternative_upstream_name>] <upstream_addr> <upstream_response_length> <upstream_response_time> <upstream_status> <req_id>`
 ```
 
-Query predicates which are inputted in the GraphQL query are [label filter expressions](https://grafana.com/docs/loki/latest/query/log_queries/#label-filter-expression) and are appends to the prepared query. For example, with the following GraphQL query, the LogQL query will be:
+Query predicates which are inputted in the GraphQL query are [label filter expressions](https://grafana.com/docs/loki/latest/query/log_queries/#label-filter-expression) and are appended to the prepared query. For example, with the following GraphQL query, the LogQL query will be:
 
 ```graphql
 query GetNginxSuccessRequests($from: Timestamp!, $to: Timestamp!) {
@@ -80,7 +80,7 @@ query GetNginxSuccessRequests($from: Timestamp!, $to: Timestamp!) {
 {container="ndc-loki-gateway-1", service_name="ndc-loki-gateway-1"} |~ `^[0-9]+\.` | pattern ... | status = `200`
 ```
 
-Log lines are returned as a list of timestamp and value pairs in the `log_lines` array.
+Log lines are returned as a list of timestamp-value pairs in the `log_lines` array.
 
 ## Aggregation
 
@@ -114,7 +114,7 @@ Metric values are returned as a list of `timestamp` and `value` pairs in the `me
 
 ## Flat Results
 
-By default, time series results are grouped by a set of unique labels ([source](https://grafana.com/docs/loki/latest/reference/loki-http-api/#examples-2)). However, they aren't compatible with Grafana because the Wild GraphQL Data Source plugin only understands the flat time series data. Therefore Loki connector supports a `flat` option to flatten results into the root array.
+By default, time series results are grouped by a set of unique labels ([source](https://grafana.com/docs/loki/latest/reference/loki-http-api/#examples-2)). However, they aren't compatible with Grafana because the Wild GraphQL Data Source plugin only understands the flat time series data. Therefore, the Loki connector supports a `flat` option to flatten results into the root array.
 
 **Log**
 
@@ -155,7 +155,7 @@ The `flat` option can be globally set in runtime settings in the configuration o
 
 ## Native Query
 
-When simple queries don't meet your need you can define native queries with prepared variables with the `${<name>}` template. Native queries are defined as collections.
+When simple queries don't meet your need you can define native queries with prepared variables with the `${<name>}` template. Native queries are represented as collections.
 
 ```yaml
 metadata:
@@ -177,7 +177,7 @@ metadata:
 
 A native query is defined as a `stream` or `metric` query only. So the `type` is required.
 
-Arguments of the native query will be required in the `args` object. Boolean expressions in `where` are also supported. However, they are are used to filter results after the query was executed. It's useful for filtering permissions.
+The `args` object will require the arguments of the native query. Boolean expressions in `where` are also supported. However, they are used to filter results after the query is executed. This is useful for filtering permissions.
 
 ```gql
 {
