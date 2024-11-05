@@ -34,12 +34,12 @@ event_triggers:
     definition:
       enable_manual: false
       insert:
-        columns: '*'
+        columns: "*"
     retry_conf:
       interval_sec: 10
       num_retries: 1
       timeout_sec: 60
-    webhook: http://localhost:8080/v1/graphql
+    webhook: http://gateway:8080/v1/graphql
     request_transform:
       body:
         action: transform
@@ -62,9 +62,9 @@ event_triggers:
     definition:
       enable_manual: false
       insert:
-        columns: '*'
+        columns: "*"
     retry_conf:
       interval_sec: 10
       num_retries: 0
       timeout_sec: 60
-    webhook: http://localhost:8080/v2/query
+    webhook: http://gateway:8080/v2/query
