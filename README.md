@@ -8,6 +8,10 @@ This connector is built using the [Go Data Connector SDK](https://github.com/has
 
 Checkout [the official quickstart documentation of Hasura](https://hasura.io/docs/3.0/getting-started/quickstart). By default, the connector serves [Loki HTTP APIs](https://grafana.com/docs/loki/latest/reference/loki-http-api/). You can execute LogQL queries directly.
 
+### Add models
+
+See [Concepts](./docs/concepts.md) to know how to define models.
+
 ## Documentation
 
 - [Concepts](./docs/concepts.md)
