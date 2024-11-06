@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 	"os"
@@ -58,7 +59,7 @@ func introspectSchema(ctx context.Context, args *UpdateArguments) error {
 	}
 
 	if err := cmd.writeConfigFile(); err != nil {
-		return fmt.Errorf("failed to write the configuration file: %s", err)
+		return fmt.Errorf("failed to write the configuration file: %w", err)
 	}
 
 	slog.Info("introspected successfully", slog.String("exec_time", time.Since(start).Round(time.Millisecond).String()))
@@ -73,8 +74,8 @@ func (uc *updateCommand) writeConfigFile() error {
 	_, _ = writer.WriteString("# yaml-language-server: $schema=https://raw.githubusercontent.com/hasura/ndc-loki/main/jsonschema/configuration.schema.json\n")
 	encoder := yaml.NewEncoder(writer)
 	encoder.SetIndent(2)
-	if err := encoder.Encode(uc.Config); err != nil {
-		return fmt.Errorf("failed to encode the configuration file: %s", err)
+	if err := encoder.Encode(uc.Config); err != nil { //nolint:all
+		return fmt.Errorf("failed to encode the configuration file: %w", err)
 	}
 	writer.Flush()
 
@@ -94,7 +95,7 @@ func (uc *updateCommand) validateNativeQueries(ctx context.Context) error {
 		slog.Debug(key, slog.String("type", "native_query"), slog.String("query", nativeQuery.Query))
 		args, err := findNativeQueryVariables(nativeQuery)
 		if err != nil {
-			return fmt.Errorf("%s; query: %s", err, nativeQuery.Query)
+			return fmt.Errorf("%w; query: %s", err, nativeQuery.Query)
 		}
 		nativeQuery.Arguments = args
 		query := nativeQuery.Query
@@ -115,7 +116,7 @@ func (uc *updateCommand) validateNativeQueries(ctx context.Context) error {
 
 		err = uc.validateQuery(ctx, query)
 		if err != nil {
-			return fmt.Errorf("invalid native query %s: %s", key, err)
+			return fmt.Errorf("invalid native query %s: %w", key, err)
 		}
 
 		// format and replace $<name> to ${<name>}
@@ -196,7 +197,7 @@ func evalMatchedNativeQueryVariable(nq metadata.NativeQuery, match []int) (*meta
 	if match[0] > 0 && nq.Query[match[0]-1] == '[' {
 		// duration variables should be bounded by square brackets
 		if match[1] >= queryLength || nq.Query[match[1]] != ']' {
-			return nil, "", fmt.Errorf("invalid LogQL range syntax")
+			return nil, "", errors.New("invalid LogQL range syntax")
 		}
 		argumentInfo.Type = string(metadata.ScalarDuration)
 	} else if match[0] > 0 {
@@ -204,7 +205,7 @@ func evalMatchedNativeQueryVariable(nq metadata.NativeQuery, match []int) (*meta
 		if c == '"' || c == '`' {
 			// duration variables should be bounded by a quote
 			if match[1] >= queryLength || nq.Query[match[1]] != c {
-				return nil, "", fmt.Errorf("invalid LogQL string syntax")
+				return nil, "", errors.New("invalid LogQL string syntax")
 			}
 			argumentInfo.Type = string(metadata.ScalarString)
 		}
@@ -233,7 +234,7 @@ func formatNativeQueryVariables(queryInput string, variables map[string]metadata
 		rawPattern := fmt.Sprintf(`\$\{?%s\}?`, key)
 		rg, err := regexp.Compile(rawPattern)
 		if err != nil {
-			return "", fmt.Errorf("failed to compile regular expression %s, query: %s, error: %s", rawPattern, queryInput, err)
+			return "", fmt.Errorf("failed to compile regular expression %s, query: %s, error: %w", rawPattern, queryInput, err)
 		}
 		query = rg.ReplaceAllLiteralString(query, fmt.Sprintf("${%s}", key))
 	}

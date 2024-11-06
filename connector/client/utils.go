@@ -15,8 +15,6 @@ var (
 	errLabelNameRequired = errors.New("label name must not be empty")
 )
 
-const maxTimeRange = (30 * 24 * time.Hour) + time.Hour
-
 // FormatUnixNanoTimestamp formats the time instance to unix timestamp in nanoseconds
 func FormatUnixNanoTimestamp(ts time.Time) string {
 	return strconv.FormatInt(ts.UnixNano(), 10)

@@ -128,7 +128,7 @@ func (bqr *BaseQueryRequest) evalTimestampFromBinaryComparisonOperator(expr *sch
 		bqr.Start = ts
 	case metadata.Since:
 		if bqr.Since != nil {
-			return errTimestampUnsupportedMultipleGtExpression
+			return errTimestampUnsupportedMultipleSinceExpression
 		}
 		dur, err := getComparisonValueDuration(expr.Value, variables, unixTimeUnix)
 		if err != nil {
@@ -240,7 +240,7 @@ func (aru *AggregateRangeUnwrapInput) FromValue(input map[string]any, unitTimeUn
 	}
 
 	if aru.Unwrap == "" {
-		return fmt.Errorf(metadata.UnwrapKey + ": label name required")
+		return errors.New(metadata.UnwrapKey + ": label name required")
 	}
 
 	rawCf, err := utils.GetNullableString(input, metadata.ConversionFunctionKey)

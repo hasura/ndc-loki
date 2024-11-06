@@ -234,7 +234,7 @@ func (nqe *NativeQueryExecutor) evalCustomArgument(key string, arg any) (*string
 		if duration == nil {
 			return nil, schema.UnprocessableContentError(fmt.Sprintf("argument `%s` is required", key), nil)
 		}
-		argString = fmt.Sprint(duration.String())
+		argString = duration.String()
 	default:
 		argString, err = utils.DecodeString(arg)
 		if err != nil {
@@ -350,10 +350,10 @@ func (nqe *NativeQueryExecutor) validateBinaryComparisonOperator(labels map[stri
 			return true, nil
 		}
 		if exprs.Operator == metadata.Equal {
-			return *value == string(labelValue), nil
+			return *value == labelValue, nil
 		}
 		if exprs.Operator == metadata.NotEqual {
-			return *value != string(labelValue), nil
+			return *value != labelValue, nil
 		}
 
 		regex, err := regexp.Compile(*value)
@@ -361,10 +361,10 @@ func (nqe *NativeQueryExecutor) validateBinaryComparisonOperator(labels map[stri
 			return false, fmt.Errorf("invalid regular expression %s: %w", *value, err)
 		}
 		if exprs.Operator == metadata.Regex {
-			return regex.MatchString(string(labelValue)), nil
+			return regex.MatchString(labelValue), nil
 		}
 
-		return !regex.MatchString(string(labelValue)), nil
+		return !regex.MatchString(labelValue), nil
 	case metadata.In, metadata.NotIn:
 		value, err := getComparisonValueStringSlice(exprs.Value, nqe.Variables)
 		if err != nil {
@@ -374,9 +374,9 @@ func (nqe *NativeQueryExecutor) validateBinaryComparisonOperator(labels map[stri
 			return true, nil
 		}
 		if exprs.Operator == metadata.In {
-			return slices.Contains(value, string(labelValue)), nil
+			return slices.Contains(value, labelValue), nil
 		} else {
-			return !slices.Contains(value, string(labelValue)), nil
+			return !slices.Contains(value, labelValue), nil
 		}
 	}
 

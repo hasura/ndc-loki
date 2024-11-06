@@ -46,12 +46,12 @@ func (c *LokiConnector) ParseConfiguration(ctx context.Context, configurationDir
 	}
 	rawCapabilities, err := json.Marshal(restCapabilities)
 	if err != nil {
-		return nil, fmt.Errorf("failed to encode capabilities: %s", err)
+		return nil, fmt.Errorf("failed to encode capabilities: %w", err)
 	}
 	c.capabilities = schema.NewRawCapabilitiesResponseUnsafe(rawCapabilities)
 	config, err := metadata.ReadConfiguration(configurationDir)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read the configuration file at %s: %s", configurationDir, err)
+		return nil, fmt.Errorf("failed to read the configuration file at %s: %w", configurationDir, err)
 	}
 
 	c.metadata = &config.Metadata
@@ -82,7 +82,7 @@ func (c *LokiConnector) TryInitState(ctx context.Context, conf *metadata.Configu
 
 	rawSchema, err := json.Marshal(ndcSchema)
 	if err != nil {
-		return nil, fmt.Errorf("failed to encode schema to json: %s", err)
+		return nil, fmt.Errorf("failed to encode schema to json: %w", err)
 	}
 	c.rawSchema = schema.NewRawSchemaResponseUnsafe(rawSchema)
 

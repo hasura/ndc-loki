@@ -153,7 +153,7 @@ func (le *LabelExpressionBuilder) evalLabelComparison(operator string, value any
 		if isRegex {
 			rg, err = regexp.Compile(*strValue)
 			if err != nil {
-				return false, fmt.Errorf("invalid regular expression `%s`: %s", *strValue, err)
+				return false, fmt.Errorf("invalid regular expression `%s`: %w", *strValue, err)
 			}
 		}
 		le.excludes[LabelExpressionField{
@@ -215,7 +215,7 @@ func (le *LabelExpressionBuilder) evalComparisonEqualOrRegex(operator string, va
 		if isRegex {
 			rg, err := regexp.Compile(*strValue)
 			if err != nil {
-				return false, fmt.Errorf("invalid regular expression `%s`: %s", *strValue, err)
+				return false, fmt.Errorf("invalid regular expression `%s`: %w", *strValue, err)
 			}
 			if rg.MatchString(inc.Value) {
 				includes = append(includes, inc)

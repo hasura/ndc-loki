@@ -194,7 +194,7 @@ func extractLabelAndFieldValues(data map[string]string, labels map[string]metada
 	}
 
 	for key := range fields {
-		result[key] = string(data[key])
+		result[key] = data[key]
 	}
 
 	return result

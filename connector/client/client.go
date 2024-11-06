@@ -23,7 +23,6 @@ import (
 type Client struct {
 	httpClient   *http.Client
 	baseURL      string
-	orgID        string
 	timeout      uint
 	maxTimeRange time.Duration
 
@@ -77,15 +76,17 @@ func New(cfg ClientSettings) (*Client, error) {
 	}
 
 	rawPort := u.Port()
-	if rawPort != "" {
+	switch {
+	case rawPort != "":
+
 		serverPort, err := strconv.ParseInt(rawPort, 10, 32)
 		if err != nil {
 			return nil, fmt.Errorf("invalid port in the connection URL: %w", err)
 		}
 		c.serverPort = int(serverPort)
-	} else if u.Scheme == "https" {
+	case u.Scheme == "https":
 		c.serverPort = 443
-	} else {
+	default:
 		c.serverPort = 80
 	}
 

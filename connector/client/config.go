@@ -37,7 +37,7 @@ func (cs *ClientSettings) UnmarshalJSON(b []byte) error {
 
 	u, err := plain.URL.Get()
 	if err != nil || u == "" {
-		return fmt.Errorf("invalid client URL %s", err)
+		return fmt.Errorf("invalid client URL %w", err)
 	}
 
 	*cs = ClientSettings(plain)

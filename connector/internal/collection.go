@@ -39,7 +39,7 @@ func (qce *QueryCollectionExecutor) Explain(ctx context.Context) (*CollectionReq
 
 	queryString, ok, err := qce.buildQueryString(expressions)
 	if err != nil {
-		return nil, "", false, schema.UnprocessableContentError(fmt.Sprintf("failed to evaluate the query: %s", err.Error()), map[string]any{
+		return nil, "", false, schema.UnprocessableContentError("failed to evaluate the query: "+err.Error(), map[string]any{
 			"collection": qce.Request.Collection,
 		})
 	}
@@ -171,7 +171,7 @@ func (qce *QueryCollectionExecutor) evalValueComparisonCondition(operator *schem
 	}
 	v, err := getComparisonValueFloat64(operator.Value, qce.Variables)
 	if err != nil {
-		return "", fmt.Errorf("invalid value expression: %s", err)
+		return "", fmt.Errorf("invalid value expression: %w", err)
 	}
 	if v == nil {
 		return "", nil
