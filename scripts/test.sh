@@ -34,4 +34,6 @@ http_wait http://localhost:3131/ready
 ./tmp/ndc-test test --endpoint http://localhost:8080
 
 # go tests
-go test -v --cover -coverpkg=./... -race -timeout 3m -coverprofile=coverage.out ./...
+go test -v --cover -coverpkg=./... -race -timeout 3m -coverprofile=coverage.out.tmp ./...
+grep -v "main.go" coverage.out.tmp > coverage.out
+rm coverage.out.tmp
