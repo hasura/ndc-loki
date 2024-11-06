@@ -12,6 +12,11 @@ func TestConnector(t *testing.T) {
 	slog.SetLogLoggerLevel(slog.LevelError)
 	ndctest.TestConnector(t, NewLokiConnector(), ndctest.TestConnectorOptions{
 		Configuration: "../tests/configuration",
-		TestDataDir:   "testdata",
+		TestDataDir:   "testdata/01-setup",
+	})
+
+	ndctest.TestConnector(t, NewLokiConnector(), ndctest.TestConnectorOptions{
+		Configuration: "../tests/configuration",
+		TestDataDir:   "testdata/02-query",
 	})
 }

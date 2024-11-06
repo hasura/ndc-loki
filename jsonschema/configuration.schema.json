@@ -296,6 +296,18 @@
         },
         {
           "properties": {
+            "description": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        {
+          "properties": {
             "type": {
               "type": "string",
               "enum": [
@@ -315,18 +327,6 @@
             "type",
             "fields"
           ]
-        },
-        {
-          "properties": {
-            "description": {
-              "type": "string"
-            },
-            "selector": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "type": "object"
         },
         {
           "properties": {
@@ -492,28 +492,6 @@
           ]
         },
         {
-          "properties": {
-            "type": {
-              "type": "string",
-              "enum": [
-                "label_format"
-              ]
-            },
-            "labels": {
-              "additionalProperties": {
-                "$ref": "#/$defs/LabelFormatRule"
-              },
-              "type": "object"
-            }
-          },
-          "additionalProperties": false,
-          "type": "object",
-          "required": [
-            "type",
-            "labels"
-          ]
-        },
-        {
           "oneOf": [
             {
               "required": [
@@ -541,6 +519,28 @@
           "required": [
             "source",
             "template"
+          ]
+        },
+        {
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "label_format"
+              ]
+            },
+            "labels": {
+              "additionalProperties": {
+                "$ref": "#/$defs/LabelFormatRule"
+              },
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "type",
+            "labels"
           ]
         },
         {
