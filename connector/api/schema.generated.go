@@ -34,14 +34,20 @@ func GetConnectorSchema() *schema.SchemaResponse {
 			"LogDeletionRequest": schema.ObjectType{
 				Description: toPtr("the log deletion request item"),
 				Fields: schema.ObjectTypeFields{
+					"created_at": schema.ObjectField{
+						Type: schema.NewNamedType("Float64").Encode(),
+					},
 					"end_time": schema.ObjectField{
-						Type: schema.NewNamedType("Int64").Encode(),
+						Type: schema.NewNamedType("Float64").Encode(),
 					},
 					"query": schema.ObjectField{
 						Type: schema.NewNamedType("String").Encode(),
 					},
+					"request_id": schema.ObjectField{
+						Type: schema.NewNamedType("String").Encode(),
+					},
 					"start_time": schema.ObjectField{
-						Type: schema.NewNamedType("Int64").Encode(),
+						Type: schema.NewNamedType("Float64").Encode(),
 					},
 					"status": schema.ObjectField{
 						Type: schema.NewNamedType("String").Encode(),
@@ -283,6 +289,9 @@ func GetConnectorSchema() *schema.SchemaResponse {
 					"end": {
 						Type: schema.NewNullableType(schema.NewNamedType("TimestampTZ")).Encode(),
 					},
+					"max_interval": {
+						Type: schema.NewNullableType(schema.NewNamedType("Duration")).Encode(),
+					},
 					"query": {
 						Type: schema.NewNamedType("String").Encode(),
 					},
@@ -322,11 +331,6 @@ func GetConnectorSchema() *schema.SchemaResponse {
 				AggregateFunctions:  schema.ScalarTypeAggregateFunctions{},
 				ComparisonOperators: map[string]schema.ComparisonOperatorDefinition{},
 				Representation:      schema.NewTypeRepresentationInt32().Encode(),
-			},
-			"Int64": schema.ScalarType{
-				AggregateFunctions:  schema.ScalarTypeAggregateFunctions{},
-				ComparisonOperators: map[string]schema.ComparisonOperatorDefinition{},
-				Representation:      schema.NewTypeRepresentationInt64().Encode(),
 			},
 			"JSON": schema.ScalarType{
 				AggregateFunctions:  schema.ScalarTypeAggregateFunctions{},

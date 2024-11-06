@@ -1,0 +1,67 @@
+{
+  "arguments": {
+    "direction": {
+      "type": "literal",
+      "value": "backward"
+    },
+    "limit": {
+      "type": "literal",
+      "value": 1
+    },
+    "query": {
+      "type": "literal",
+      "value": "sum(rate({service_name=\"ndc-loki-ndc-loki-1\"} [1m]))"
+    },
+    "time": {
+      "type": "literal",
+      "value": "2024-01-01T00:00:00Z"
+    }
+  },
+  "collection": "loki_query",
+  "collection_relationships": {},
+  "query": {
+    "fields": {
+      "__value": {
+        "column": "__value",
+        "fields": {
+          "fields": {
+            "encodingFlags": {
+              "column": "encodingFlags",
+              "type": "column"
+            },
+            "resultType": {
+              "column": "resultType",
+              "type": "column"
+            },
+            "vector": {
+              "column": "vector",
+              "fields": {
+                "fields": {
+                  "fields": {
+                    "metric": {
+                      "column": "metric",
+                      "type": "column"
+                    },
+                    "time": {
+                      "column": "time",
+                      "type": "column"
+                    },
+                    "value": {
+                      "column": "value",
+                      "type": "column"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "type": "column"
+            }
+          },
+          "type": "object"
+        },
+        "type": "column"
+      }
+    }
+  }
+}

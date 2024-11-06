@@ -14,7 +14,7 @@ common:
 
 schema_config:
   configs:
-    - from: 2020-05-15
+    - from: "2023-01-05"
       store: tsdb
       object_store: filesystem
       schema: v13
@@ -25,3 +25,10 @@ schema_config:
 storage_config:
   filesystem:
     directory: /tmp/loki/chunks
+
+compactor:
+  retention_enabled: true
+  delete_request_store: filesystem
+
+limits_config:
+  deletion_mode: "filter-and-delete"

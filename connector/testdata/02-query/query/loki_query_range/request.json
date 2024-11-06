@@ -1,0 +1,123 @@
+{
+  "arguments": {
+    "direction": {
+      "type": "literal",
+      "value": "backward"
+    },
+    "end": {
+      "type": "literal",
+      "value": "2024-01-30T00:00:00Z"
+    },
+    "interval": {
+      "type": "literal",
+      "value": "1d"
+    },
+    "limit": {
+      "type": "literal",
+      "value": 1
+    },
+    "query": {
+      "type": "literal",
+      "value": "{service_name=\"ndc-loki-ndc-loki-1\"}"
+    },
+    "start": {
+      "type": "literal",
+      "value": "2024-01-01T00:00:01Z"
+    }
+  },
+  "collection": "loki_query_range",
+  "collection_relationships": {},
+  "query": {
+    "fields": {
+      "__value": {
+        "column": "__value",
+        "fields": {
+          "fields": {
+            "encodingFlags": {
+              "column": "encodingFlags",
+              "type": "column"
+            },
+            "matrix": {
+              "column": "matrix",
+              "fields": {
+                "fields": {
+                  "fields": {
+                    "metric": {
+                      "column": "metric",
+                      "type": "column"
+                    },
+                    "values": {
+                      "column": "values",
+                      "fields": {
+                        "fields": {
+                          "fields": {
+                            "time": {
+                              "column": "time",
+                              "type": "column"
+                            },
+                            "value": {
+                              "column": "value",
+                              "type": "column"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "type": "column"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "type": "column"
+            },
+            "resultType": {
+              "column": "resultType",
+              "type": "column"
+            },
+            "stream": {
+              "column": "stream",
+              "fields": {
+                "fields": {
+                  "fields": {
+                    "stream": {
+                      "column": "stream",
+                      "type": "column"
+                    },
+                    "values": {
+                      "column": "values",
+                      "fields": {
+                        "fields": {
+                          "fields": {
+                            "timestamp": {
+                              "column": "timestamp",
+                              "type": "column"
+                            },
+                            "value": {
+                              "column": "value",
+                              "type": "column"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "type": "column"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "type": "column"
+            }
+          },
+          "type": "object"
+        },
+        "type": "column"
+      }
+    }
+  }
+}

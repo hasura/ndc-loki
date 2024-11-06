@@ -27,9 +27,9 @@ http_wait() {
   exit 1
 }
 
-docker compose -f ./compose.base.yaml up -d loki ndc-loki
+docker compose -f ./compose.yaml up -d loki ndc-loki alloy
 http_wait http://localhost:8080/health
-http_wait http://localhost:3100/ready
+http_wait http://localhost:3131/ready
 
 ./tmp/ndc-test test --endpoint http://localhost:8080
 

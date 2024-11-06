@@ -1,0 +1,37 @@
+{
+  "arguments": {},
+  "collection": "loki_log_deletion_requests",
+  "collection_relationships": {},
+  "query": {
+    "fields": {
+      "__value": {
+        "column": "__value",
+        "fields": {
+          "fields": {
+            "fields": {
+              "end_time": {
+                "column": "end_time",
+                "type": "column"
+              },
+              "query": {
+                "column": "query",
+                "type": "column"
+              },
+              "start_time": {
+                "column": "start_time",
+                "type": "column"
+              },
+              "status": {
+                "column": "status",
+                "type": "column"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "type": "column"
+      }
+    }
+  }
+}

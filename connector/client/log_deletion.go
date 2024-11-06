@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/hasura/ndc-sdk-go/scalar"
 	"github.com/hasura/ndc-sdk-go/schema"
 	"go.opentelemetry.io/otel/codes"
 )
@@ -15,17 +16,20 @@ const apiLogDeletionPath = "/loki/api/v1/delete"
 
 // CreateLogDeletionRequestParams input parameters to create a log deletion request
 type CreateLogDeletionRequestParams struct {
-	Query string     `json:"query"`
-	Start *time.Time `json:"start,omitempty"`
-	End   *time.Time `json:"end,omitempty"`
+	Query       string           `json:"query"`
+	Start       *time.Time       `json:"start,omitempty"`
+	End         *time.Time       `json:"end,omitempty"`
+	MaxInterval *scalar.Duration `json:"max_interval"`
 }
 
 // LogDeletionRequest the log deletion request item
 type LogDeletionRequest struct {
-	StartTime int64  `json:"start_time"`
-	EndTime   int64  `json:"end_time"`
-	Query     string `json:"query"`
-	Status    string `json:"status"`
+	RequestID string  `json:"request_id"`
+	StartTime float64 `json:"start_time"`
+	EndTime   float64 `json:"end_time"`
+	CreatedAt float64 `json:"created_at"`
+	Query     string  `json:"query"`
+	Status    string  `json:"status"`
 }
 
 // CreateLogDeletionRequest [creates a new log deletion request] for the authenticated tenant
@@ -45,6 +49,9 @@ func (c *Client) CreateLogDeletionRequest(ctx context.Context, params CreateLogD
 	}
 	if params.End != nil {
 		q.Add("end", params.End.Format(time.RFC3339))
+	}
+	if params.MaxInterval != nil && params.MaxInterval.Duration > 0 {
+		q.Add("max_interval", params.MaxInterval.String())
 	}
 	req.URL.RawQuery = q.Encode()
 

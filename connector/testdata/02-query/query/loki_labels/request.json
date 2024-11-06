@@ -1,0 +1,22 @@
+{
+  "arguments": {
+    "query": {
+      "type": "literal",
+      "value": "{service_name=\"ndc-loki-ndc-loki-1\"}"
+    },
+    "since": {
+      "type": "literal",
+      "value": "1h"
+    }
+  },
+  "collection": "loki_labels",
+  "collection_relationships": {},
+  "query": {
+    "fields": {
+      "__value": {
+        "column": "__value",
+        "type": "column"
+      }
+    }
+  }
+}

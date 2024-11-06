@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/hasura/ndc-sdk-go/utils"
+	"github.com/prometheus/common/model"
 )
 
 var errEndpointRequired = errors.New("the endpoint setting is empty")
@@ -22,6 +23,8 @@ type ClientSettings struct {
 	Headers map[string]utils.EnvString `json:"headers" yaml:"headers"`
 	// The default timeout in seconds of client requests. The zero value is no timeout.
 	Timeout uint `json:"timeout" yaml:"timeout"`
+	// The duration to limit the max time range in query requests. If the value is 0 the client will leave the time range validation to Loki server.
+	MaxTimeRange model.Duration `json:"max_time_range" yaml:"max_time_range" jsonschema:"type=string,pattern=[0-9]+(h|d|w|y)"`
 }
 
 // UnmarshalJSON implements json.Unmarshaler.

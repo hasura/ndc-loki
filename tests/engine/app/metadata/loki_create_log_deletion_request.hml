@@ -11,6 +11,8 @@ definition:
       type: String!
     - name: start
       type: TimestampTZ
+    - name: max_interval
+      type: Duration
   source:
     dataConnectorName: loki
     dataConnectorCommand:

@@ -21,10 +21,11 @@ import (
 
 // Client is a HTTP client to request Loki API resources
 type Client struct {
-	httpClient *http.Client
-	baseURL    string
-	orgID      string
-	timeout    uint
+	httpClient   *http.Client
+	baseURL      string
+	orgID        string
+	timeout      uint
+	maxTimeRange time.Duration
 
 	// pre-calculated host and port of the Loki server URL
 	serverAddress string
@@ -70,6 +71,7 @@ func New(cfg ClientSettings) (*Client, error) {
 		},
 		baseURL:       baseURL,
 		timeout:       cfg.Timeout,
+		maxTimeRange:  time.Duration(cfg.MaxTimeRange),
 		serverAddress: u.Hostname(),
 		tracer:        connector.NewTracer("LokiClient"),
 	}

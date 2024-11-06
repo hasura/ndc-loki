@@ -119,8 +119,10 @@ func (j LabelsParams) ToMap() map[string]any {
 // ToMap encodes the struct to a value map
 func (j LogDeletionRequest) ToMap() map[string]any {
 	r := make(map[string]any)
+	r["created_at"] = j.CreatedAt
 	r["end_time"] = j.EndTime
 	r["query"] = j.Query
+	r["request_id"] = j.RequestID
 	r["start_time"] = j.StartTime
 	r["status"] = j.Status
 
