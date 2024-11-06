@@ -6,6 +6,7 @@ connection_settings:
     X-Scope-OrgID:
       env: LOKI_ORG_ID
   timeout: 30
+  max_time_range: 30d
 metadata:
   models:
     hasura_log:

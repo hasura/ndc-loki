@@ -85,7 +85,7 @@ func (qce *QueryCollectionExecutor) evalAggregation(query string, fn KeyValue) (
 	case metadata.AbsentOverTime, metadata.Rate, metadata.BytesRate, metadata.CountOverTime, metadata.BytesOverTime:
 		rng, err := utils.DecodeDuration(fn.Value, utils.WithBaseUnix(qce.Runtime.UnixTimeUnit.Duration()))
 		if err != nil {
-			return "", fmt.Errorf("%s: %s", fn.Key, err)
+			return "", fmt.Errorf("%s: %w", fn.Key, err)
 		}
 
 		query = fmt.Sprintf(`%s(%s [%s])`, fn.Key, query, rng.String())
@@ -94,11 +94,11 @@ func (qce *QueryCollectionExecutor) evalAggregation(query string, fn KeyValue) (
 	case metadata.Sort:
 		rawOrdering, err := utils.DecodeString(fn.Value)
 		if err != nil {
-			return "", fmt.Errorf("%s: %s", fn.Key, err)
+			return "", fmt.Errorf("%s: %w", fn.Key, err)
 		}
 		ordering, err := metadata.ParseOrdering(rawOrdering)
 		if err != nil {
-			return "", fmt.Errorf("%s: %s", fn.Key, err)
+			return "", fmt.Errorf("%s: %w", fn.Key, err)
 		}
 		orderFunc := metadata.Sort
 		if ordering == metadata.Descending {

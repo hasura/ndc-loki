@@ -60,7 +60,7 @@ services:
     image: grafana/loki:3.2.0
     command: "-config.file=/etc/loki/config.yaml"
     ports:
-      - 3100
+      - "3131:3100"
       - 7946
       - 9095
     volumes:

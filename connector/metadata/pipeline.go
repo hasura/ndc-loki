@@ -322,7 +322,7 @@ func (p PipelineLabelFilter) Render() (string, error) {
 			sb.WriteString(str)
 			sb.WriteRune('`')
 		} else {
-			sb.WriteString(fmt.Sprint(str))
+			sb.WriteString(fmt.Sprint(p.Value))
 		}
 
 		return sb.String(), nil

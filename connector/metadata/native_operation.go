@@ -98,7 +98,7 @@ func (scb *connectorSchemaBuilder) buildNativeQuery(name string, query *NativeQu
 
 	objectName := strcase.ToCamel(name)
 	if _, ok := scb.ObjectTypes[objectName]; ok {
-		objectName = fmt.Sprintf("%sResult", objectName)
+		objectName += "Result"
 	}
 	scb.ObjectTypes[objectName] = resultType
 	collection := schema.CollectionInfo{
@@ -120,8 +120,8 @@ func FindNativeQueryVariableNames(query string) []string {
 	matches := variableRegex.FindAllStringSubmatch(query, -1)
 
 	results := make([]string, len(matches))
-	for _, m := range matches {
-		results = append(results, m[1])
+	for i, m := range matches {
+		results[i] = m[1]
 	}
 
 	return results

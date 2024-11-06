@@ -22,7 +22,6 @@ var cli struct {
 func main() {
 	// Handle SIGINT (CTRL+C) gracefully.
 	ctx, stop := signal.NotifyContext(context.TODO(), os.Interrupt)
-	defer stop()
 
 	cmd := kong.Parse(&cli, kong.UsageOnError())
 	logger, err := initLogger(cli.LogLevel)
@@ -30,6 +29,7 @@ func main() {
 		logger.Error(fmt.Sprintf("failed to initialize: %s", err))
 		os.Exit(1)
 	}
+
 	switch cmd.Command() {
 	case "update":
 		if err := introspectSchema(ctx, &cli.Update); err != nil {
@@ -37,11 +37,13 @@ func main() {
 			os.Exit(1)
 		}
 	case "version":
-		_, _ = fmt.Print(version.BuildVersion)
+		_, _ = fmt.Fprint(os.Stderr, version.BuildVersion)
 	default:
 		logger.Error(fmt.Sprintf("unknown command <%s>", cmd.Command()))
 		os.Exit(1)
 	}
+
+	stop()
 }
 
 func initLogger(logLevel string) (*slog.Logger, error) {

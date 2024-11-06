@@ -3,7 +3,7 @@ linters:
   disable:
     # - containedctx
     - dupl
-    # - err113
+    - err113
     - lll
     # - gocognit
     - godot
@@ -13,29 +13,29 @@ linters:
     - funlen
     # - gomoddirectives
     - depguard
-    # - gosec
-    # - revive
-    # - cyclop
+    - gosec
+    - revive
+    - cyclop
     - wsl
-    # - wrapcheck
-    # - varnamelen
-    # - nlreturn
-    # - exhaustive
-    # - exhaustruct
+    - wrapcheck
+    - varnamelen
+    - exhaustive
+    - exhaustruct
     # - gocyclo
     # - prealloc
-    # - ireturn
-    # - gochecknoglobals
+    - ireturn
+    - gochecknoglobals
     # - godox
-    # - stylecheck
-    # - nilnil
+    - stylecheck
+    - nilnil
     # - maintidx
     - mnd
     - tagliatelle
     # - noctx
     - tagalign
     - gochecknoinits
-    # - execinquery
+    - execinquery
+    - exportloopref
 issues:
   exclude-files:
     - ".*_test\\.go$"

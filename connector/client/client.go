@@ -21,10 +21,10 @@ import (
 
 // Client is a HTTP client to request Loki API resources
 type Client struct {
-	httpClient *http.Client
-	baseURL    string
-	orgID      string
-	timeout    uint
+	httpClient   *http.Client
+	baseURL      string
+	timeout      uint
+	maxTimeRange time.Duration
 
 	// pre-calculated host and port of the Loki server URL
 	serverAddress string
@@ -70,20 +70,23 @@ func New(cfg ClientSettings) (*Client, error) {
 		},
 		baseURL:       baseURL,
 		timeout:       cfg.Timeout,
+		maxTimeRange:  time.Duration(cfg.MaxTimeRange),
 		serverAddress: u.Hostname(),
 		tracer:        connector.NewTracer("LokiClient"),
 	}
 
 	rawPort := u.Port()
-	if rawPort != "" {
+	switch {
+	case rawPort != "":
+
 		serverPort, err := strconv.ParseInt(rawPort, 10, 32)
 		if err != nil {
 			return nil, fmt.Errorf("invalid port in the connection URL: %w", err)
 		}
 		c.serverPort = int(serverPort)
-	} else if u.Scheme == "https" {
+	case u.Scheme == "https":
 		c.serverPort = 443
-	} else {
+	default:
 		c.serverPort = 80
 	}
 

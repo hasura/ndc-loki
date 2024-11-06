@@ -16,6 +16,10 @@
         },
         "timeout": {
           "type": "integer"
+        },
+        "max_time_range": {
+          "type": "string",
+          "pattern": "[0-9]+(h|d|w|y)"
         }
       },
       "additionalProperties": false,
@@ -23,7 +27,8 @@
       "required": [
         "url",
         "headers",
-        "timeout"
+        "timeout",
+        "max_time_range"
       ]
     },
     "Configuration": {

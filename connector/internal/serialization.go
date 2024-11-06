@@ -81,10 +81,10 @@ func serializeGroupedMetricMatrix(data []client.MatrixValues, labels map[string]
 		result[metadata.MetricValueKey] = formatValue(lastValue.Value, runtimeSettings.Format)
 
 		for label := range labels {
-			result[label] = string(item.Metric[label])
+			result[label] = item.Metric[label]
 		}
 		for key := range fields {
-			result[key] = string(item.Metric[key])
+			result[key] = item.Metric[key]
 		}
 		values := make([]map[string]any, len(item.Values))
 		for j, rawValue := range item.Values {

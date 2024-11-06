@@ -1,0 +1,24 @@
+{
+  "collection_relationships": {},
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "loki_push_log_lines",
+      "arguments": {
+        "streams": [
+          {
+            "stream": {
+              "foo": "bar"
+            },
+            "values": [
+              {
+                "line": "rOhA4vqnxr",
+                "timestamp": "2024-11-06T00:00:00Z"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

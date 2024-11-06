@@ -13,7 +13,6 @@ import (
 	"github.com/prometheus/common/model"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/trace"
 )
 
 // QueryDirection determines the sort order of logs
@@ -50,7 +49,7 @@ type QueryRangeParams struct {
 //
 // [queries logs within a range of time]: https://grafana.com/docs/loki/latest/reference/loki-http-api/#query-logs-within-a-range-of-time
 func (c *Client) QueryRange(ctx context.Context, params *QueryRangeParams) (*QueryRangeData, error) {
-	if params.Query == "" {
+	if params == nil || params.Query == "" {
 		return nil, errQueryRequired
 	}
 	req, span, cancel, err := c.createRequestSpan(ctx, http.MethodGet, "/loki/api/v1/query_range", nil)
@@ -61,22 +60,17 @@ func (c *Client) QueryRange(ctx context.Context, params *QueryRangeParams) (*Que
 
 	span.SetAttributes(attribute.String("db.query.text", params.Query))
 
-	if params == nil {
-		return c.execRangeQuery(req, span)
-	}
 	q := req.URL.Query()
+	if err := applyQueryTimeRange(&q, params.Start, params.End, params.Since, c.maxTimeRange); err != nil {
+		span.SetStatus(codes.Error, "validation failure")
+		span.RecordError(err)
+
+		return nil, schema.UnprocessableContentError(err.Error(), nil)
+	}
+
 	q.Set("query", params.Query)
-	if params.Start != nil {
-		q.Set("start", FormatUnixTimestamp(*params.Start))
-	}
-	if params.End != nil {
-		q.Set("end", FormatUnixTimestamp(*params.End))
-	}
 	if params.Limit > 0 {
 		q.Set("limit", strconv.FormatInt(int64(params.Limit), 32))
-	}
-	if params.Since != nil && params.Since.Duration > 0 {
-		q.Set("since", params.Since.String())
 	}
 	if params.Step != nil && params.Step.Duration > 0 {
 		q.Set("step", params.Step.String())
@@ -89,7 +83,21 @@ func (c *Client) QueryRange(ctx context.Context, params *QueryRangeParams) (*Que
 	}
 	req.URL.RawQuery = q.Encode()
 
-	return c.execRangeQuery(req, span)
+	resp, err := c.do(req, span)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var result queryRangeResponse
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		span.SetStatus(codes.Error, "failed to decode json response")
+		span.RecordError(err)
+
+		return nil, schema.InternalServerError(fmt.Sprintf("failed to decode json response: %s", err), nil)
+	}
+
+	return &result.Data, nil
 }
 
 // QueryParams request parameters for the query function
@@ -108,7 +116,7 @@ type QueryParams struct {
 //
 // [queries against a single point in time]: https://grafana.com/docs/loki/latest/reference/loki-http-api/#query-logs-at-a-single-point-in-time
 func (c *Client) Query(ctx context.Context, params *QueryParams) (*QueryData, error) {
-	if params.Query == "" {
+	if params == nil || params.Query == "" {
 		return nil, errQueryRequired
 	}
 	req, span, cancel, err := c.createRequestSpan(ctx, http.MethodGet, "/loki/api/v1/query", nil)
@@ -119,20 +127,18 @@ func (c *Client) Query(ctx context.Context, params *QueryParams) (*QueryData, er
 
 	span.SetAttributes(attribute.String("db.query.text", params.Query))
 
-	if params != nil {
-		q := req.URL.Query()
-		q.Set("query", params.Query)
-		if params.Time != nil {
-			q.Set("time", FormatUnixTimestamp(*params.Time))
-		}
-		if params.Limit > 0 {
-			q.Set("limit", strconv.FormatInt(int64(params.Limit), 32))
-		}
-		if params.Direction != nil {
-			q.Set("direction", string(*params.Direction))
-		}
-		req.URL.RawQuery = q.Encode()
+	q := req.URL.Query()
+	q.Set("query", params.Query)
+	if params.Time != nil {
+		q.Set("time", FormatUnixNanoTimestamp(*params.Time))
 	}
+	if params.Limit > 0 {
+		q.Set("limit", strconv.FormatInt(int64(params.Limit), 32))
+	}
+	if params.Direction != nil {
+		q.Set("direction", string(*params.Direction))
+	}
+	req.URL.RawQuery = q.Encode()
 
 	resp, err := c.do(req, span)
 	if err != nil {
@@ -141,24 +147,6 @@ func (c *Client) Query(ctx context.Context, params *QueryParams) (*QueryData, er
 	defer resp.Body.Close()
 
 	var result queryResponse
-	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		span.SetStatus(codes.Error, "failed to decode json response")
-		span.RecordError(err)
-
-		return nil, schema.InternalServerError(fmt.Sprintf("failed to decode json response: %s", err), nil)
-	}
-
-	return &result.Data, nil
-}
-
-func (c *Client) execRangeQuery(req *http.Request, span trace.Span) (*QueryRangeData, error) {
-	resp, err := c.do(req, span)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	var result queryRangeResponse
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		span.SetStatus(codes.Error, "failed to decode json response")
 		span.RecordError(err)

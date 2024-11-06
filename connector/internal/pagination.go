@@ -46,7 +46,7 @@ func sortVector(vector []client.VectorValue, sortElements []ColumnOrder) {
 				if !okA && !okB {
 					continue
 				}
-				difference := strings.Compare(string(labelA), string(labelB))
+				difference := strings.Compare(labelA, labelB)
 				if difference == 0 {
 					continue
 				}
@@ -100,7 +100,7 @@ func sortMatrix(matrix []client.MatrixValues, sortElements []ColumnOrder) {
 				if !okA && !okB {
 					continue
 				}
-				difference := strings.Compare(string(labelA), string(labelB))
+				difference := strings.Compare(labelA, labelB)
 				if difference == 0 {
 					continue
 				}

@@ -2,7 +2,6 @@ package metadata
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/hasura/ndc-sdk-go/schema"
 	"github.com/hasura/ndc-sdk-go/utils"
@@ -237,7 +236,7 @@ func (scb *connectorSchemaBuilder) buildMetricItem(name string, info ModelInfo) 
 	if err != nil {
 		return err
 	}
-	labelEnumScalarName := fmt.Sprintf("%sLabel", objectName)
+	labelEnumScalarName := objectName + "Label"
 	scalarType := schema.NewScalarType()
 	scalarType.Representation = schema.NewTypeRepresentationEnum(labelEnums).Encode()
 	scb.ScalarTypes[labelEnumScalarName] = *scalarType
@@ -246,7 +245,7 @@ func (scb *connectorSchemaBuilder) buildMetricItem(name string, info ModelInfo) 
 	aggregationObjectName := scb.createAggregationObjectType(objectName, labelEnumScalarName)
 	arguments := createCollectionArguments(QueryTypeMetric)
 	arguments[ArgumentKeyAggregations] = schema.ArgumentInfo{
-		Description: utils.ToPtr(fmt.Sprintf("Aggregation operators for %s", name)),
+		Description: utils.ToPtr("Aggregation operators for " + name),
 		Type:        schema.NewArrayType(schema.NewNamedType(aggregationObjectName)).Encode(),
 	}
 

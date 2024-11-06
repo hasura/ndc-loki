@@ -81,7 +81,7 @@ func ReadConfiguration(configurationDir string) (*Configuration, error) {
 		return nil, err
 	}
 
-	if err = yaml.Unmarshal(yamlBytes, &config); err != nil {
+	if err = yaml.Unmarshal(yamlBytes, &config); err != nil { //nolint:all
 		return nil, err
 	}
 

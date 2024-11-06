@@ -27,11 +27,13 @@ http_wait() {
   exit 1
 }
 
-docker compose -f ./compose.base.yaml up -d loki ndc-loki
+docker compose -f ./compose.yaml up -d loki ndc-loki alloy
 http_wait http://localhost:8080/health
-http_wait http://localhost:3100/ready
+http_wait http://localhost:3131/ready
 
 ./tmp/ndc-test test --endpoint http://localhost:8080
 
 # go tests
-go test -v -coverpkg=./connector/... -race -timeout 3m -coverprofile=coverage.out ./...
+go test -v --cover -coverpkg=./... -race -timeout 3m -coverprofile=coverage.out.tmp ./...
+grep -v "main.go" coverage.out.tmp > coverage.out
+rm coverage.out.tmp

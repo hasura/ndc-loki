@@ -1,0 +1,14 @@
+{
+  "collection_relationships": {},
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "loki_create_log_deletion_request",
+      "arguments": {
+        "end": "2024-11-06T00:00:01Z",
+        "query": "{service_name=\"ndc-loki-ndc-loki-1\"}",
+        "start": "2024-11-05T00:00:01Z"
+      }
+    }
+  ]
+}

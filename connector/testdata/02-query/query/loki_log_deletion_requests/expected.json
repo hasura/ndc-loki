@@ -1,0 +1,16 @@
+[
+  {
+    "rows": [
+      {
+        "__value": [
+          {
+            "end_time": 1730851201,
+            "query": "{service_name=\"ndc-loki-ndc-loki-1\"}",
+            "start_time": 1730764801,
+            "status": "received"
+          }
+        ]
+      }
+    ]
+  }
+]

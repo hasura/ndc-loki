@@ -73,6 +73,11 @@ var defaultScalars = map[string]schema.ScalarType{
 		},
 		Representation: schema.NewTypeRepresentationString().Encode(),
 	},
+	string(ScalarInt64): {
+		AggregateFunctions:  schema.ScalarTypeAggregateFunctions{},
+		ComparisonOperators: map[string]schema.ComparisonOperatorDefinition{},
+		Representation:      schema.NewTypeRepresentationInt64().Encode(),
+	},
 	string(ScalarString): {
 		AggregateFunctions: schema.ScalarTypeAggregateFunctions{},
 		ComparisonOperators: map[string]schema.ComparisonOperatorDefinition{

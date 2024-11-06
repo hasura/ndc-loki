@@ -1049,18 +1049,26 @@ definition:
         LogDeletionRequest:
           description: the log deletion request item
           fields:
+            created_at:
+              type:
+                type: named
+                name: Float64
             end_time:
               type:
                 type: named
-                name: Int64
+                name: Float64
             query:
+              type:
+                type: named
+                name: String
+            request_id:
               type:
                 type: named
                 name: String
             start_time:
               type:
                 type: named
-                name: Int64
+                name: Float64
             status:
               type:
                 type: named
@@ -2053,6 +2061,12 @@ definition:
                 underlying_type:
                   type: named
                   name: TimestampTZ
+            max_interval:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: Duration
             query:
               type:
                 type: named

@@ -35,9 +35,9 @@ func (lli LogLineInput) MarshalJSON() ([]byte, error) {
 		ts = *lli.Timestamp
 	}
 	if len(lli.StructuredMetadata) > 0 {
-		result = []any{FormatUnixTimestamp(ts), lli.Line, lli.StructuredMetadata}
+		result = []any{FormatUnixNanoTimestamp(ts), lli.Line, lli.StructuredMetadata}
 	} else {
-		result = []any{FormatUnixTimestamp(ts), lli.Line}
+		result = []any{FormatUnixNanoTimestamp(ts), lli.Line}
 	}
 
 	return json.Marshal(result)
@@ -52,11 +52,13 @@ func (c *Client) PushLogLines(ctx context.Context, params *PushLogLineInput) err
 		return fmt.Errorf("failed to marshal the log line input: %w", err)
 	}
 
-	req, span, cancel, err := c.createRequestSpan(ctx, http.MethodGet, "/loki/api/v1/push", &buf)
+	req, span, cancel, err := c.createRequestSpan(ctx, http.MethodPost, "/loki/api/v1/push", &buf)
 	if err != nil {
 		return err
 	}
 	defer cancel()
+
+	req.Header.Set("Content-Type", "application/json")
 
 	return c.doEmptyResponse(req, span)
 }

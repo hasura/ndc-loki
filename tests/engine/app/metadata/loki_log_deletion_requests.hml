@@ -6,12 +6,16 @@ definition:
   description: the log deletion request item
   fields:
     - name: end_time
-      type: Int64!
+      type: Float64!
     - name: query
       type: String!
     - name: start_time
-      type: Int64!
+      type: Float64!
     - name: status
+      type: String!
+    - name: created_at
+      type: Float64!
+    - name: request_id
       type: String!
   graphql:
     typeName: LogDeletionRequest
@@ -33,6 +37,8 @@ definition:
           - query
           - start_time
           - status
+          - created_at
+          - request_id
 
 ---
 kind: Command

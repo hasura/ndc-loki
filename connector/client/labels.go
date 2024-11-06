@@ -28,21 +28,15 @@ type LabelsParams struct {
 }
 
 // ApplyQueryParams apply values to query parameters
-func (lp LabelsParams) ApplyQueryParams(q url.Values) url.Values {
+func (lp LabelsParams) ApplyQueryParams(q url.Values, maxTimeRange time.Duration) (url.Values, error) {
 	if lp.Query != "" {
 		q.Set("query", lp.Query)
 	}
-	if lp.Start != nil {
-		q.Set("start", FormatUnixTimestamp(*lp.Start))
-	}
-	if lp.End != nil {
-		q.Set("end", FormatUnixTimestamp(*lp.End))
-	}
-	if lp.Since != nil && lp.Since.Duration > 0 {
-		q.Set("since", lp.Since.String())
+	if err := applyQueryTimeRange(&q, lp.Start, lp.End, lp.Since, maxTimeRange); err != nil {
+		return q, err
 	}
 
-	return q
+	return q, nil
 }
 
 type labelsResponse struct {
@@ -59,7 +53,13 @@ func (c *Client) Labels(ctx context.Context, params *LabelsParams) ([]string, er
 	}
 	defer cancel()
 
-	q := params.ApplyQueryParams(req.URL.Query())
+	q, err := params.ApplyQueryParams(req.URL.Query(), c.maxTimeRange)
+	if err != nil {
+		span.SetStatus(codes.Error, "validation failure")
+		span.RecordError(err)
+
+		return nil, schema.UnprocessableContentError(err.Error(), nil)
+	}
 	req.URL.RawQuery = q.Encode()
 
 	resp, err := c.do(req, span)
@@ -101,7 +101,13 @@ func (c *Client) LabelValues(ctx context.Context, params *LabelValuesParams) ([]
 	}
 	defer cancel()
 
-	q := params.ApplyQueryParams(req.URL.Query())
+	q, err := params.ApplyQueryParams(req.URL.Query(), c.maxTimeRange)
+	if err != nil {
+		span.SetStatus(codes.Error, "validation failure")
+		span.RecordError(err)
+
+		return nil, schema.UnprocessableContentError(err.Error(), nil)
+	}
 	req.URL.RawQuery = q.Encode()
 
 	resp, err := c.do(req, span)
