@@ -108,7 +108,7 @@ func (bqr *BaseQueryRequest) evalTimestampFromBinaryComparisonOperator(expr *sch
 			return err
 		}
 		bqr.Timestamp = ts
-	case metadata.Least:
+	case metadata.Least, metadata.LeastOrEqual:
 		if bqr.End != nil {
 			return errTimestampUnsupportedMultipleLtExpression
 		}
@@ -117,7 +117,7 @@ func (bqr *BaseQueryRequest) evalTimestampFromBinaryComparisonOperator(expr *sch
 			return err
 		}
 		bqr.End = ts
-	case metadata.Greater:
+	case metadata.Greater, metadata.GreaterOrEqual:
 		if bqr.Start != nil {
 			return errTimestampUnsupportedMultipleGtExpression
 		}

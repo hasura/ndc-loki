@@ -16,7 +16,7 @@ services:
     ports:
       - mode: ingress
         protocol: tcp
-        published: "3000"
+        published: "3280"
         target: 3000
   otel-collector:
     command:
