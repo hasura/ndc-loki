@@ -6,9 +6,11 @@ connection_settings:
     X-Scope-OrgID:
       env: LOKI_ORG_ID
   timeout: 30
+  max_time_range: 30d
 metadata:
   models: {}
-  native_operations: {}
+  native_operations:
+    queries: {}
 runtime:
   flat: false
   unix_time_unit: ms

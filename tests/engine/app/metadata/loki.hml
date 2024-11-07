@@ -278,7 +278,17 @@ definition:
               argument_type:
                 type: named
                 name: Timestamp
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: Timestamp
             _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: Timestamp
+            _lte:
               type: custom
               argument_type:
                 type: named

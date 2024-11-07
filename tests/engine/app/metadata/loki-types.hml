@@ -213,6 +213,10 @@ definition:
           argumentType: Timestamp!
         - name: _since
           argumentType: Duration!
+        - name: _gte
+          argumentType: Timestamp!
+        - name: _lte
+          argumentType: Timestamp!
       dataConnectorOperatorMapping:
         - dataConnectorName: loki
           dataConnectorScalarType: Timestamp
@@ -617,4 +621,114 @@ definition:
     enable: true
   graphql:
     typeName: Int32_bool_exp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: loki
+  dataConnectorScalarType: LabelSet
+  representation: LabelSet
+  graphql:
+    comparisonExpressionTypeName: LabelSet_comparison_exp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: loki
+  dataConnectorScalarType: HasuraLogAggregateLabel
+  representation: HasuraLogAggregateLabel
+  graphql:
+    comparisonExpressionTypeName: HasuraLogAggregateLabel_comparison_exp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: loki
+  dataConnectorScalarType: ConversionFunction
+  representation: ConversionFunction
+  graphql:
+    comparisonExpressionTypeName: ConversionFunction_comparison_exp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: loki
+  dataConnectorScalarType: Int64
+  representation: Int64
+  graphql:
+    comparisonExpressionTypeName: Int64_comparison_exp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: loki
+  dataConnectorScalarType: Float64
+  representation: Float64
+  graphql:
+    comparisonExpressionTypeName: Float64_comparison_exp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: loki
+  dataConnectorScalarType: Ordering
+  representation: Ordering
+  graphql:
+    comparisonExpressionTypeName: Ordering_comparison_exp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: loki
+  dataConnectorScalarType: HttpLogAggregateLabel
+  representation: HttpLogAggregateLabel
+  graphql:
+    comparisonExpressionTypeName: HttpLogAggregateLabel_comparison_exp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: loki
+  dataConnectorScalarType: NginxLogAggregateLabel
+  representation: NginxLogAggregateLabel
+  graphql:
+    comparisonExpressionTypeName: NginxLogAggregateLabel_comparison_exp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: loki
+  dataConnectorScalarType: TimestampTZ
+  representation: TimestampTZ
+  graphql:
+    comparisonExpressionTypeName: TimestampTZ_comparison_exp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: loki
+  dataConnectorScalarType: QueryDirection
+  representation: QueryDirection
+  graphql:
+    comparisonExpressionTypeName: QueryDirection_comparison_exp
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: loki
+  dataConnectorScalarType: Int32
+  representation: Int32
+  graphql:
+    comparisonExpressionTypeName: Int32_comparison_exp
 
