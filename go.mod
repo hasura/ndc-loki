@@ -5,7 +5,7 @@ go 1.23.1
 require (
 	github.com/alecthomas/kong v1.3.0
 	github.com/go-viper/mapstructure/v2 v2.2.1
-	github.com/hasura/ndc-sdk-go v1.6.1
+	github.com/hasura/ndc-sdk-go v1.6.2-0.20241107090138-0dbd55c322c3
 	github.com/iancoleman/strcase v0.3.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/lmittmann/tint v1.0.5

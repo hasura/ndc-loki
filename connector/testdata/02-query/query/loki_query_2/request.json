@@ -1,0 +1,63 @@
+{
+  "collection": "loki_query",
+  "query": {
+    "fields": {
+      "__value": {
+        "type": "column",
+        "column": "__value",
+        "fields": {
+          "type": "object",
+          "fields": {
+            "encodingFlags": {
+              "type": "column",
+              "column": "encodingFlags",
+              "fields": null
+            },
+            "resultType": {
+              "type": "column",
+              "column": "resultType",
+              "fields": null
+            },
+            "vector": {
+              "type": "column",
+              "column": "vector",
+              "fields": {
+                "type": "array",
+                "fields": {
+                  "type": "object",
+                  "fields": {
+                    "metric": {
+                      "type": "column",
+                      "column": "metric",
+                      "fields": null
+                    },
+                    "time": {
+                      "type": "column",
+                      "column": "time",
+                      "fields": null
+                    },
+                    "value": {
+                      "type": "column",
+                      "column": "value",
+                      "fields": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "arguments": {
+    "direction": { "type": "literal", "value": "forward" },
+    "limit": { "type": "literal", "value": 3600 },
+    "query": {
+      "type": "literal",
+      "value": "sum(rate({container_name=~\".*nginx.*\"}[1m]))"
+    },
+    "time": { "type": "literal", "value": "2024-11-07T07:17:51" }
+  },
+  "collection_relationships": {}
+}

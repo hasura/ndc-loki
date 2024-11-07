@@ -330,6 +330,18 @@
         },
         {
           "properties": {
+            "description": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        {
+          "properties": {
             "type": {
               "type": "string",
               "enum": [
@@ -349,30 +361,6 @@
             "type",
             "fields"
           ]
-        },
-        {
-          "properties": {
-            "description": {
-              "type": "string"
-            },
-            "selector": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "type": "object"
-        },
-        {
-          "properties": {
-            "description": {
-              "type": "string"
-            },
-            "selector": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "type": "object"
         },
         {
           "properties": {
@@ -402,6 +390,30 @@
         },
         {
           "properties": {
+            "description": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        {
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        {
+          "properties": {
             "type": {
               "type": "string",
               "enum": [
@@ -425,18 +437,6 @@
             "pattern",
             "fields"
           ]
-        },
-        {
-          "properties": {
-            "description": {
-              "type": "string"
-            },
-            "selector": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "type": "object"
         },
         {
           "properties": {

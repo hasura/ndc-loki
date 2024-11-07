@@ -70,15 +70,19 @@ func (c *Client) QueryRange(ctx context.Context, params *QueryRangeParams) (*Que
 
 	q.Set("query", params.Query)
 	if params.Limit > 0 {
-		q.Set("limit", strconv.FormatInt(int64(params.Limit), 32))
+		span.SetAttributes(attribute.Int("limit", params.Limit))
+		q.Set("limit", strconv.FormatInt(int64(params.Limit), 10))
 	}
 	if params.Step != nil && params.Step.Duration > 0 {
+		span.SetAttributes(attribute.String("step", params.Step.String()))
 		q.Set("step", params.Step.String())
 	}
 	if params.Interval != nil && params.Interval.Duration > 0 {
+		span.SetAttributes(attribute.String("interval", params.Interval.String()))
 		q.Set("interval", params.Interval.String())
 	}
 	if params.Direction != nil {
+		span.SetAttributes(attribute.String("direction", string(*params.Direction)))
 		q.Set("direction", string(*params.Direction))
 	}
 	req.URL.RawQuery = q.Encode()
@@ -130,12 +134,15 @@ func (c *Client) Query(ctx context.Context, params *QueryParams) (*QueryData, er
 	q := req.URL.Query()
 	q.Set("query", params.Query)
 	if params.Time != nil {
+		span.SetAttributes(attribute.Stringer("time", params.Time))
 		q.Set("time", FormatUnixNanoTimestamp(*params.Time))
 	}
 	if params.Limit > 0 {
-		q.Set("limit", strconv.FormatInt(int64(params.Limit), 32))
+		span.SetAttributes(attribute.Int("limit", params.Limit))
+		q.Set("limit", strconv.FormatInt(int64(params.Limit), 10))
 	}
 	if params.Direction != nil {
+		span.SetAttributes(attribute.String("direction", string(*params.Direction)))
 		q.Set("direction", string(*params.Direction))
 	}
 	req.URL.RawQuery = q.Encode()

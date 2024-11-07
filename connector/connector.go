@@ -40,6 +40,7 @@ func (c *LokiConnector) ParseConfiguration(ctx context.Context, configurationDir
 				Variables:    schema.LeafCapability{},
 				NestedFields: schema.NestedFieldCapabilities{},
 				Explain:      map[string]any{},
+				Aggregates:   map[string]any{},
 			},
 			Mutation: schema.MutationCapabilities{},
 		},
